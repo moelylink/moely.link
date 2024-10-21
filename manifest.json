@@ -3,8 +3,13 @@
   "short_name": "萌哩",
   "icons": [
     {
-      "src": "favicon.png",
-      "sizes": "200x200",
+      "src": "/assets/img/favicon.png",
+      "sizes": "90x90",
+      "type": "image/png"
+    },
+    {
+      "src": "/assets/img/favicon2.png",
+      "sizes": "180x180",
       "type": "image/png"
     }
   ],
