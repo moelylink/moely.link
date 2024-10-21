@@ -1,0 +1,24 @@
+{
+  "name": "萌哩 - 萌萌的二次元美图",
+  "short_name": "萌哩",
+  "icons": [
+    {
+      "src": "favicon.png",
+      "sizes": "200x200",
+      "type": "image/png"
+    }
+  ],
+  "share_target": {
+      "action": "compose",
+      "params": {
+        "title": "title",
+        "text": "text",
+        "url": "url"
+    }
+  },
+  "theme_color": "#f9f9f9",
+  "background_color": "transparent",
+  "display": "standalone",
+  "scope": "/",
+  "start_url": "/"
+}
