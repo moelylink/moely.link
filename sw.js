@@ -1,7 +1,7 @@
 importScripts('https://storage.googleapis.com/workbox-cdn/releases/7.1.0/workbox-sw.js');
 
 // 缓存版本号
-let cacheVersion = '-241021';
+let cacheVersion = '-241022';
 // 最大条目数
 const maxEntries = 500;
 
