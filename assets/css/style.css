@@ -6431,7 +6431,7 @@ address p {
       flex-direction: column;
     }
     .featured-card .img,
-    detail-classic {
+    .detail-classic {
       width: 100%;
     }
 }
