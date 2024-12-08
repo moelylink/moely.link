@@ -2272,27 +2272,25 @@ body {
     }
 }
 
-@media (min-width: 768px) {
-    .body_has-navbar-left .portfolio.col-3 .portfolio-item {
-        width: 100%;
-    }
+.portfolio .portfolio-item {
+    max-width: 50%;
 }
 
-@media (min-width: 1012px) {
-    .body_has-navbar-left .portfolio.col-3 .portfolio-item {
-        width: 50%;
-    }
-}
-
-@media (min-width: 1230px) {
-    .body_has-navbar-left .portfolio.col-3 .portfolio-item {
-        width: 50%;
-    }
-}
-
-@media (min-width: 1430px) {
-    .body_has-navbar-left .portfolio.col-3 .portfolio-item {
+@media (min-width: 660px) {
+    .body_has-navbar-left .portfolio .portfolio-item {
         width: 33.33333333%;
+    }
+}
+
+@media (min-width: 1000px) {
+    .body_has-navbar-left .portfolio .portfolio-item {
+        width: 25%;
+    }
+}
+
+@media (min-width: 1600px) {
+    .body_has-navbar-left .portfolio .portfolio-item {
+        width: 20%;
     }
 }
 
@@ -2572,6 +2570,7 @@ body {
 }
 
 /*portfolio 4 grid*/
+
 .portfolio.col-4 .portfolio-item {
     width: 24.98%;
 }
@@ -5448,7 +5447,7 @@ address p {
     }
 }
 
-@media screen and (max-width: 992px) {
+@media screen and (max-width: 1600px) {
 
     /*portfolio grid*/
     .portfolio.col-2 .portfolio-item,
@@ -5456,7 +5455,8 @@ address p {
     .portfolio.col-4 .portfolio-item,
     .portfolio.col-5 .portfolio-item,
     .portfolio.col-6 .portfolio-item {
-        width: 33.3333333%;
+        width: 25%;
+        /*width: 33.3333333%;*/
         /*width: 50%;*/
     }
 
@@ -5500,7 +5500,7 @@ address p {
     }
 }
 
-@media screen and (max-width: 800px) {
+@media screen and (max-width: 1000px) {
 
     /*portfolio grid*/
     .portfolio.col-2 .portfolio-item,
@@ -5508,8 +5508,8 @@ address p {
     .portfolio.col-4 .portfolio-item,
     .portfolio.col-5 .portfolio-item,
     .portfolio.col-6 .portfolio-item {
-        /*width: 33.3333333%;*/
-        width: 50%;
+        width: 33.3333333%;
+        /*width: 50%;*/
     }
 
     .testimonial.grid-2 li,
@@ -6195,7 +6195,7 @@ address p {
 }
 
 /*------------------------------- Phone ------------------------------- */
-@media screen and (max-width: 480px) {
+@media screen and (max-width: 660px) {
 
     /*portfolio grid*/
     .portfolio.col-2 .portfolio-item,
@@ -6204,8 +6204,8 @@ address p {
     .portfolio.col-5 .portfolio-item,
     .portfolio.col-6 .portfolio-item,
     .testimonial.grid-2 li {
-        width: 100%;
-        /*width: 50%;*/
+        /*width: 100%;*/
+        width: 50%;
     }
 
     .error-parallax .error-avatar img {
@@ -6355,5 +6355,83 @@ address p {
     .count-down .c-grid,
     .count-down-alt .c-grid {
         margin: 10px;
+    }
+}
+
+/* ----- detail page ----- */
+.image-info-wrapper {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 40px;
+    margin: 20px 0;
+}
+
+.featured-card .img {
+    width: 100%;
+    text-align: center;
+}
+
+.featured-card .img img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 5px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.detail-classic {
+    width: 50%;
+}
+
+.blog-post h1 {
+    margin-bottom: 15px;
+    font-weight: bolder;
+}
+
+.blog-post .content {
+    line-height: 1.6;
+    color: #333;
+}
+
+.tags {
+    margin-top: 20px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    span {
+        background-color: #f0f0f0;
+        color: #333;
+        padding: 5px 10px;
+        border-radius: 15px;
+    }
+}
+.button-group {
+    margin-top: 20px;
+}
+.button-group button {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-right: 10px;
+}
+.btn-source {
+    background-color: #ff73a9;
+    color: white;
+}
+.btn-download {
+    background-color: #549da5;
+    color: white;
+}
+.btn:hover {
+    opacity: 0.9;
+}
+@media (max-width: 768px) {
+    .image-info-wrapper {
+      flex-direction: column;
+    }
+    .featured-card .img,
+    .blog-classic {
+      width: 100%;
     }
 }
