@@ -61,7 +61,7 @@ if (workbox) {
         })
     );
     workbox.routing.registerRoute(
-        new RegExp('^https://i\.moely\.link'),
+        new RegExp('^https://(?:t|i)\.moely\.link'),
         new workbox.strategies.CacheFirst({
             cacheName: 'image-cache' + cacheVersion,
             plugins: [
