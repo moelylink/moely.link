@@ -1166,7 +1166,7 @@ body{
 
     .menuzord-menu .dropdown>li>a,
     .menuzord-menu .megamenu-row li>a {
-        line-height: 18px;
+        line-height: 20px;
     }
 
     .l-navbar-wrapper,
@@ -1960,9 +1960,9 @@ body{
     z-index: 1200;
     right: 5%;
     bottom: 30px;
-    overflow-y: scroll;
+    overflow-y: auto;
     width: 90%;
-    max-width: 400px;
+    max-width: 450px;
     max-height: 90%;
     -webkit-transition-duration: 0.2s;
     transition-duration: 0.2s;
@@ -4072,8 +4072,8 @@ header li.nav-icon .cart-table-list a {
 
 .widget-social-link a:hover,
 .widget-tags a:hover {
-    background: #d6b161;
-    border: 1px solid #d6b161;
+    background: rgb(255, 0, 180);
+    border: 1px solid rgb(0, 180, 255);
 }
 
 .circle a {
@@ -4086,8 +4086,10 @@ header li.nav-icon .cart-table-list a {
 
 .widget-tags a {
     float: left;
-    margin-right: 10px;
-    margin-bottom: 10px;
+    margin-top: 5px;
+    margin-bottom: 5px;
+    margin-left: 5px;
+    margin-right: 5px;
     padding: 3px 10px;
     border: 1px solid #d3d3d3;
     border-radius: 50px;

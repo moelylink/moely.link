@@ -14,7 +14,7 @@
             indentChildren: true,
             indicatorFirstLevel: "+",
             indicatorSecondLevel: "+",
-            scrollable: true,
+            scrollable: false,
             scrollableMaxHeight: 400
         }, options);
         var menu_container = $(this);
