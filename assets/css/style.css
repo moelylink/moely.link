@@ -4087,11 +4087,11 @@ header li.nav-icon .cart-table-list a {
 
 .widget-tags a {
     float: left;
-    margin-top: 5px;
-    margin-bottom: 5px;
-    margin-left: 5px;
-    margin-right: 5px;
-    padding: 2px 5px;
+    margin-top: 3px;
+    margin-bottom: 3px;
+    margin-left: 3px;
+    margin-right: 3px;
+    padding: 1.5px 3px;
     border: 1px solid #d3d3d3;
     border-radius: 50px;
 }
@@ -4130,12 +4130,12 @@ header li.nav-icon .cart-table-list a {
 .thumb .widget-tags {
     display: inline-block;
     width: 100%;
-    max-height: 70%;
+    max-height: 50%;
     overflow: hidden;
     position: absolute;
     left: 0;
     bottom: 0;
-    padding-left: 5px;
+    padding-left: 3px;
     opacity: 0;
 }
 
