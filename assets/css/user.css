@@ -10,8 +10,8 @@
 
 .login .login-wrapper {
     background-color: rgba(255,255,255,0.7);
-    width: 80%;
-    height: 80%;
+    width: 90%;
+    height: 90%;
     max-width: 360px;
     max-height: 520px;
     border-radius: 15px;
@@ -28,13 +28,13 @@
     font-size: 36px;
     font-weight: bold;
     text-align: center;
-    line-height: 96px;
+    line-height: 90px;
 }
 
 .login .input-item {
     display: block;
     width: 100%;
-    margin-bottom: 15px;
+    margin-bottom: 10px;
     border: 0;
     padding: 10px;
     border-bottom: 1px solid rgb(128, 125, 125);
