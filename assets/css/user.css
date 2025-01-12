@@ -9,14 +9,14 @@
 }
 
 .login .login-wrapper {
-    background-color: #fff;
+    background-color: rgba(255,255,255,0.7);
     width: 80%;
     height: 80%;
-    max-width: 360px;
-    max-height: 480px;
+    max-width: 350px;
+    max-height: 500px;
     border-radius: 15px;
     margin-top: 20px;
-    padding: 0 30px;
+    padding: 10px 35px;
     position: absolute;
     left: 50%;
     top: 50%;
@@ -27,17 +27,17 @@
     font-size: 36px;
     font-weight: bold;
     text-align: center;
-    line-height: 150px;
+    line-height: 96px;
 }
 
 .login .input-item {
     display: block;
     width: 100%;
-    margin-bottom: 20px;
+    margin-bottom: 15px;
     border: 0;
     padding: 10px;
     border-bottom: 1px solid rgb(128, 125, 125);
-    font-size: 15px;
+    font-size: 14px;
     outline: none;
 }
 
@@ -48,10 +48,12 @@
 .login .btn {
     text-align: center;
     padding: 10px;
-    width: 100%;
-    margin-top: 40px;
+    width: 60%;
+    margin-top: 10px;
+    font-size: 16px;
     background-image: linear-gradient(to right, #a6c1ee, #fbc2eb);
-    color: #fff;
+    color: #000000;
+    border-radius: 8px;    
 }
 
 .login .btn:hover {
@@ -60,10 +62,17 @@
 
 .login .msg {
     text-align: center;
-    line-height: 80px;
+    line-height: 60px;
+    clear: both;
+}
+
+.login .msg2 {
+    text-align: right;
+    line-height: 20px;
+    margin-bottom: 20px;
 }
 
 .login a {
     text-decoration-line: none;
-    color: #abc1ee;
+    color: #0055ff;
 }
