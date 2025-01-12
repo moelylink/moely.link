@@ -1,9 +1,9 @@
 importScripts('https://storage.googleapis.com/workbox-cdn/releases/7.1.0/workbox-sw.js');
 
 // 缓存版本号
-let cacheVersion = '-241022';
+let cacheVersion = '-250112';
 // 最大条目数
-const maxEntries = 500;
+const maxEntries = 1000;
 
 if (workbox) {
     console.log(`Workbox加载成功🎉`);
@@ -46,6 +46,22 @@ if (workbox) {
     // 缓存 bootcdn、unpkg、jsdelivr 等公共库，用正则匹配
     workbox.routing.registerRoute(
         new RegExp('^https://(?:cdn\.bootcdn\.net|unpkg\.com|cdn\.jsdelivr\.net)'),
+        new workbox.strategies.CacheFirst({
+            cacheName: 'cdn' + cacheVersion,
+            fetchOptions: {
+                mode: 'cors',
+                credentials: 'omit',
+            },
+            plugins: [
+                new workbox.expiration.ExpirationPlugin({
+                    maxEntries: maxEntries,
+                    maxAgeSeconds: 30 * 24 * 60 * 60,
+                }),
+            ],
+        })
+    );
+    workbox.routing.registerRoute(
+        new RegExp('^https://js\.hcaptcha\.com'),
         new workbox.strategies.CacheFirst({
             cacheName: 'cdn' + cacheVersion,
             fetchOptions: {
