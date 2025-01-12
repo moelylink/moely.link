@@ -64,9 +64,9 @@ document.addEventListener('DOMContentLoaded', (event) => {
             useEffect(() => {
                 supabase.auth.onAuthStateChange(async (event, session) => {
                     if (event == "PASSWORD_RECOVERY") {
-                        const { data, error } = await supabase.auth.updateUser({ password: newPwd })
-                        if (data) alert("密码已更新！")
-                        if (error) alert("密码更新失败！")
+                        const { data, error } = await supabase.auth.updateUser({ password: newPwd });
+                        if (data) alert("密码已更新！");
+                        if (error) alert("密码更新失败！");
                     }
                 })
             }, [])

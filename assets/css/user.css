@@ -12,8 +12,8 @@
     background-color: rgba(255,255,255,0.7);
     width: 80%;
     height: 80%;
-    max-width: 350px;
-    max-height: 500px;
+    max-width: 360px;
+    max-height: 520px;
     border-radius: 15px;
     margin-top: 20px;
     padding: 10px 35px;
@@ -21,6 +21,7 @@
     left: 50%;
     top: 50%;
     transform: translate(-50%, -50%);
+    font-size: 14px;
 }
 
 .login .header {
@@ -50,10 +51,9 @@
     padding: 10px;
     width: 60%;
     margin-top: 10px;
-    font-size: 16px;
     background-image: linear-gradient(to right, #a6c1ee, #fbc2eb);
     color: #000000;
-    border-radius: 8px;    
+    border-radius: 8px;
 }
 
 .login .btn:hover {
@@ -62,7 +62,8 @@
 
 .login .msg {
     text-align: center;
-    line-height: 60px;
+    margin-top: 5px;
+    line-height: 40px;
     clear: both;
 }
 
