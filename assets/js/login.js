@@ -1,8 +1,8 @@
-const supabaseUrl = 'https://fefckqwvcvuadiixvhns.supabase.co';
-const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZlZmNrcXd2Y3Z1YWRpaXh2aG5zIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzYzNDE5OTUsImV4cCI6MjA1MTkxNzk5NX0.-OUllwH7v2K-j4uIx7QQaV654R5Gz5_1jP4BGdkWWfg';
-const supabaseClient = supabase.createClient(supabaseUrl, supabaseKey);
-
 document.addEventListener('DOMContentLoaded', (event) => {
+    const supabaseUrl = 'https://fefckqwvcvuadiixvhns.supabase.co';
+    const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZlZmNrcXd2Y3Z1YWRpaXh2aG5zIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzYzNDE5OTUsImV4cCI6MjA1MTkxNzk5NX0.-OUllwH7v2K-j4uIx7QQaV654R5Gz5_1jP4BGdkWWfg';
+    const supabaseClient = supabase.createClient(supabaseUrl, supabaseKey);
+    
     const UserLogin = document.getElementById('UserLogin');
     const UserRegister = document.getElementById('UserRegister');
     const ResetPwd = document.getElementById('ResetPwd');
@@ -10,13 +10,13 @@ document.addEventListener('DOMContentLoaded', (event) => {
     if (UserLogin) {  // Check if the element exists
         UserLogin.addEventListener('click', async (e) => {
             e.preventDefault();
-            const email = document.getElementById('login-email').value;
-            const password = document.getElementById('login-password').value;
+            const useremail = document.getElementById('login-email').value;
+            const userpwd = document.getElementById('login-password').value;
             const hcaptchaResponse = document.querySelector("[name='h-captcha-response']").value;
             if (!hcaptchaResponse) { alert('请完成人机验证！'); return; }
             const { error } = await supabase.auth.signInWithPassword({
-                email,
-                password,
+                email: useremail,
+                password: userpwd,
                 options: {
                     captchaToken,
                     redirectTo: 'https://www.moely.link/user/',
@@ -30,15 +30,15 @@ document.addEventListener('DOMContentLoaded', (event) => {
     if (UserRegister) {
         UserRegister.addEventListener('click', async (e) => {
             e.preventDefault();
-            const email = document.getElementById('register-email').value;
-            const password = document.getElementById('register-password').value;
+            const useremail = document.getElementById('register-email').value;
+            const userpwd = document.getElementById('register-password').value;
             const repeatpwd = document.getElementById('password-repeat').value;
             const hcaptchaResponse = document.querySelector("[name='h-captcha-response']").value;
             if (!hcaptchaResponse) { alert('请完成人机验证！'); return; }
-            if( repeatpwd != password ) { alert('两次输入的密码不同！'); return; }
+            if( repeatpwd != userpwd ) { alert('两次输入的密码不同！'); return; }
             const { error } = await supabase.auth.signUp({
-                email,
-                password,
+                email: useremail,
+                password: userpwd,
                 options: {
                     captchaToken,
                     emailRedirectTo: 'https://www.moely.link/user/',
