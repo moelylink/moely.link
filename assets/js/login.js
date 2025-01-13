@@ -283,17 +283,71 @@ document.addEventListener('DOMContentLoaded', (event) => {
     }
 
     const githubLogin = document.querySelector('.github-login');
+    const microsoftLogin = document.querySelector('.microsoft-login');
     const googleLogin = document.querySelector('.google-login');
 
     if (githubLogin) {
-        githubLogin.addEventListener('click', () => {
-            showMessage('GitHub 登录', 'success');
+        githubLogin.addEventListener('click', async () => {
+            const hcaptchaResponse = document.querySelector("[name='h-captcha-response']").value;
+            if (!hcaptchaResponse) { 
+                showMessage('请完成人机验证！', 'warning');
+                return; 
+            }
+            const { data, error } = await client.auth.signInWithOAuth({
+                provider: 'github',
+                options: {
+                    redirectTo: `https://www.moely.link/user/`,
+                },
+            })              
+            if (error) {
+                showMessage(error.message, 'error');
+            } else {
+                showMessage('前往GitHub授权！', 'success');
+            }
+        });
+    }
+
+    if (microsoftLogin) {
+        microsoftLogin.addEventListener('click', async () => {
+            const hcaptchaResponse = document.querySelector("[name='h-captcha-response']").value;
+            if (!hcaptchaResponse) { 
+                showMessage('请完成人机验证！', 'warning');
+                return; 
+            }
+            const { data, error } = await client.auth.signInWithOAuth({
+                provider: 'azure',
+                options: {
+                    scopes: 'email',
+                    redirectTo: `https://www.moely.link/user/`,
+                },
+            })              
+            if (error) {
+                showMessage(error.message, 'error');
+            } else {
+                showMessage('前往Microsoft授权！', 'success');
+            }
         });
     }
 
     if (googleLogin) {
-        googleLogin.addEventListener('click', () => {
-            showMessage('Google 登录', 'success');
+        googleLogin.addEventListener('click', async () => {
+            const hcaptchaResponse = document.querySelector("[name='h-captcha-response']").value;
+            if (!hcaptchaResponse) { 
+                showMessage('请完成人机验证！', 'warning');
+                return; 
+            }
+            const { data, error } = await client.auth.signInWithOAuth({
+                provider: 'google',
+                options: {
+                    scopes: 'email',
+                    redirectTo: `https://www.moely.link/user/`,
+                },
+            })              
+            if (error) {
+                showMessage(error.message, 'error');
+            } else {
+                showMessage('前往Google授权！', 'success');
+            }
         });
     }
 });
