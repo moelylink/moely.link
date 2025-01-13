@@ -244,7 +244,6 @@ document.addEventListener('DOMContentLoaded', (event) => {
         });
     }
 
-    // 面板切换
     const toRegister = document.getElementById('toRegister');
     const toLogin = document.getElementById('toLogin');
     const toRegisterMobile = document.getElementById('toRegisterMobile');
@@ -269,7 +268,6 @@ document.addEventListener('DOMContentLoaded', (event) => {
 
     function switchToRegister() {
         container.classList.add('show-register');
-        // 重置验证码和表单
         if (window.hcaptcha) {
             window.hcaptcha.reset();
         }
@@ -278,10 +276,24 @@ document.addEventListener('DOMContentLoaded', (event) => {
 
     function switchToLogin() {
         container.classList.remove('show-register');
-        // 重置验证码和表单
         if (window.hcaptcha) {
             window.hcaptcha.reset();
         }
         document.querySelectorAll('form').forEach(form => form.reset());
+    }
+
+    const githubLogin = document.querySelector('.github-login');
+    const googleLogin = document.querySelector('.google-login');
+
+    if (githubLogin) {
+        githubLogin.addEventListener('click', () => {
+            showMessage('GitHub 登录', 'success');
+        });
+    }
+
+    if (googleLogin) {
+        googleLogin.addEventListener('click', () => {
+            showMessage('Google 登录', 'success');
+        });
     }
 });
