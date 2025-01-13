@@ -90,6 +90,10 @@ document.addEventListener('DOMContentLoaded', (event) => {
                 showMessage('请输入密码！', 'warning');
                 return;
             }
+            if (userpwd.length < 8) {
+                showMessage('密码长度必须大于8位！', 'warning');
+                return;
+            }
             if (!hcaptchaResponse) { 
                 showMessage('请完成人机验证！', 'warning');
                 return; 
@@ -131,6 +135,10 @@ document.addEventListener('DOMContentLoaded', (event) => {
             }
             if (!userpwd) {
                 showMessage('请输入密码！', 'warning');
+                return;
+            }
+            if (userpwd.length < 8) {
+                showMessage('密码长度必须大于8位！', 'warning');
                 return;
             }
             if (!repeatpwd) {
@@ -186,6 +194,10 @@ document.addEventListener('DOMContentLoaded', (event) => {
                 showMessage('请输入新密码！', 'warning');
                 return;
             }
+            if (newPwd.length < 8) {
+                showMessage('密码长度必须大于8位！', 'warning');
+                return;
+            }
             if (!hcaptchaResponse) { 
                 showMessage('请完成人机验证！', 'warning');
                 return; 
@@ -230,5 +242,46 @@ document.addEventListener('DOMContentLoaded', (event) => {
                 }
             });
         });
+    }
+
+    // 面板切换
+    const toRegister = document.getElementById('toRegister');
+    const toLogin = document.getElementById('toLogin');
+    const toRegisterMobile = document.getElementById('toRegisterMobile');
+    const toLoginMobile = document.getElementById('toLoginMobile');
+    const container = document.querySelector('.auth-container');
+    
+    if (toRegister) {
+        toRegister.addEventListener('click', switchToRegister);
+    }
+    
+    if (toLogin) {
+        toLogin.addEventListener('click', switchToLogin);
+    }
+
+    if (toRegisterMobile) {
+        toRegisterMobile.addEventListener('click', switchToRegister);
+    }
+    
+    if (toLoginMobile) {
+        toLoginMobile.addEventListener('click', switchToLogin);
+    }
+
+    function switchToRegister() {
+        container.classList.add('show-register');
+        // 重置验证码和表单
+        if (window.hcaptcha) {
+            window.hcaptcha.reset();
+        }
+        document.querySelectorAll('form').forEach(form => form.reset());
+    }
+
+    function switchToLogin() {
+        container.classList.remove('show-register');
+        // 重置验证码和表单
+        if (window.hcaptcha) {
+            window.hcaptcha.reset();
+        }
+        document.querySelectorAll('form').forEach(form => form.reset());
     }
 });
