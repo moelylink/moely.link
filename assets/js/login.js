@@ -78,13 +78,23 @@ document.addEventListener('DOMContentLoaded', (event) => {
     if (UserLogin) {
         UserLogin.addEventListener('click', async (e) => {
             e.preventDefault();
-            const useremail = document.getElementById('login-email').value;
-            const userpwd = document.getElementById('login-password').value;
+            const useremail = document.getElementById('login-email').value.trim();
+            const userpwd = document.getElementById('login-password').value.trim();
             const hcaptchaResponse = document.querySelector("[name='h-captcha-response']").value;
+
+            if (!useremail) {
+                showMessage('请输入邮箱！', 'warning');
+                return;
+            }
+            if (!userpwd) {
+                showMessage('请输入密码！', 'warning');
+                return;
+            }
             if (!hcaptchaResponse) { 
                 showMessage('请完成人机验证！', 'warning');
                 return; 
             }
+
             const { data, error } = await client.auth.signInWithPassword({
                 email: useremail,
                 password: userpwd,
@@ -99,7 +109,9 @@ document.addEventListener('DOMContentLoaded', (event) => {
                 }
             } else {
                 showMessage('登录成功！', 'success');
-                window.location.href = '/user/';
+                setTimeout(() => {
+                    window.location.href = '/user/';
+                }, 3000);
             }
         });
     }
@@ -107,18 +119,37 @@ document.addEventListener('DOMContentLoaded', (event) => {
     if (UserRegister) {
         UserRegister.addEventListener('click', async (e) => {
             e.preventDefault();
-            const useremail = document.getElementById('register-email').value;
-            const userpwd = document.getElementById('register-password').value;
-            const repeatpwd = document.getElementById('password-repeat').value;
+            const useremail = document.getElementById('register-email').value.trim();
+            const userpwd = document.getElementById('register-password').value.trim();
+            const repeatpwd = document.getElementById('password-repeat').value.trim();
             const hcaptchaResponse = document.querySelector("[name='h-captcha-response']").value;
+            const checkbox = document.getElementById('checkbox');
+
+            if (!useremail) {
+                showMessage('请输入邮箱！', 'warning');
+                return;
+            }
+            if (!userpwd) {
+                showMessage('请输入密码！', 'warning');
+                return;
+            }
+            if (!repeatpwd) {
+                showMessage('请重复输入密码！', 'warning');
+                return;
+            }
+            if (!checkbox.checked) {
+                showMessage('请阅读并同意用户协议！', 'warning');
+                return;
+            }
             if (!hcaptchaResponse) { 
                 showMessage('请完成人机验证！', 'warning');
                 return; 
             }
-            if( repeatpwd != userpwd ) { 
+            if (repeatpwd != userpwd) { 
                 showMessage('两次输入的密码不同！', 'warning');
                 return; 
             }
+
             const { data, error } = await client.auth.signUp({
                 email: useremail,
                 password: userpwd,
@@ -133,7 +164,9 @@ document.addEventListener('DOMContentLoaded', (event) => {
                 }
             } else {
                 showMessage('注册成功，请前往邮箱激活您的账号。记得检查垃圾收件箱！', 'success');
-                window.location.href = '/user/login/';
+                setTimeout(() => {
+                    window.location.href = '/user/login/';
+                }, 3000);
             }
         });
     }
@@ -141,13 +174,23 @@ document.addEventListener('DOMContentLoaded', (event) => {
     if (ResetPwd) {
         ResetPwd.addEventListener('click', async (e) => {
             e.preventDefault();
-            const email = document.getElementById('user-email').value;
-            const newPwd = document.getElementById('new-password').value;
+            const email = document.getElementById('user-email').value.trim();
+            const newPwd = document.getElementById('new-password').value.trim();
             const hcaptchaResponse = document.querySelector("[name='h-captcha-response']").value;
+
+            if (!email) {
+                showMessage('请输入邮箱！', 'warning');
+                return;
+            }
+            if (!newPwd) {
+                showMessage('请输入新密码！', 'warning');
+                return;
+            }
             if (!hcaptchaResponse) { 
                 showMessage('请完成人机验证！', 'warning');
                 return; 
             }
+
             const { data, error } = await client.auth.resetPasswordForEmail(
                 email,
                 {
@@ -164,7 +207,9 @@ document.addEventListener('DOMContentLoaded', (event) => {
                 return; 
             }
             showMessage('密码重置链接已发送，请检查邮箱！', 'success');
-            window.location.href = '/user/login/';
+            setTimeout(() => {
+                window.location.href = '/user/login/';
+            }, 3000);
             
             client.auth.onAuthStateChange(async (event, session) => {
                 if (event === "PASSWORD_RECOVERY") {
@@ -178,7 +223,9 @@ document.addEventListener('DOMContentLoaded', (event) => {
                         }
                     } else {
                         showMessage('密码已更新！', 'success');
-                        window.location.href = '/user/login/';
+                        setTimeout(() => {
+                            window.location.href = '/user/login/';
+                        }, 3000);
                     }
                 }
             });
