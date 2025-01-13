@@ -115,11 +115,6 @@ a {
     text-decoration: none !important;
 }
 
-a:hover,
-a:focus {
-    color: #323232;
-}
-
 a,
 .btn {
     -webkit-transition: all 0.3s;

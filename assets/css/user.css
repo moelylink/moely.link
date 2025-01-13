@@ -216,7 +216,7 @@
     color: #a0aec0;
 }
 
-.btn {
+.auth-container .btn {
     width: 100%;
     height: 52px;
     border-radius: 12px;
@@ -234,13 +234,13 @@
     box-shadow: 0 4px 15px rgba(74, 144, 226, 0.3);
 }
 
-.btn:hover {
+.auth-container .btn:hover {
     transform: translateY(-2px);
     box-shadow: 0 8px 25px rgba(74, 144, 226, 0.4);
     background-image: linear-gradient(120deg, #5a9ee8 0%, #a08ae2 100%);
 }
 
-.btn:active {
+.auth-container .btn:active {
     transform: translateY(0);
     box-shadow: 0 4px 15px rgba(74, 144, 226, 0.3);
     background-image: linear-gradient(120deg, #4080d0 0%, #8c6ed4 100%);
@@ -257,14 +257,14 @@
 }
 
 a {
-    color: #8ec5fc;
+    color: #4ea6ff;
     text-decoration: none;
     font-weight: 500;
     transition: color 0.2s ease;
 }
 
 a:hover {
-    color: #e0c3fc;
+    color: #a340ff;
     text-decoration: underline;
 }
 
@@ -285,12 +285,6 @@ a:hover {
 
 .form-wrapper {
     padding: 0 10px;
-}
-
-.msg {
-    font-size: 14px;
-    color: #64748b;
-    margin: 16px 0;
 }
 
 .info-text {
@@ -391,7 +385,7 @@ a:hover {
         margin-bottom: 14px;
     }
 
-    .btn {
+    .auth-container .btn {
         height: 46px;
         font-size: 15px;
         margin: 14px 0;
