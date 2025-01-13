@@ -19,7 +19,7 @@
     right: 0;
     bottom: 0;
     background: linear-gradient(120deg, rgba(224, 195, 252, 0.7) 0%, rgba(142, 197, 252, 0.7) 100%);
-    backdrop-filter: blur(10px);
+    backdrop-filter: blur(2px);
 }
 
 .login-wrapper {

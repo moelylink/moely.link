@@ -60,14 +60,11 @@ if (workbox) {
             ],
         })
     );
+    // hCaptcha
     workbox.routing.registerRoute(
         new RegExp('^https://js\.hcaptcha\.com'),
         new workbox.strategies.CacheFirst({
-            cacheName: 'cdn' + cacheVersion,
-            fetchOptions: {
-                mode: 'cors',
-                credentials: 'omit',
-            },
+            cacheName: 'hcaptcha' + cacheVersion,
             plugins: [
                 new workbox.expiration.ExpirationPlugin({
                     maxEntries: maxEntries,
@@ -76,6 +73,7 @@ if (workbox) {
             ],
         })
     );
+    // 网站图片缓存
     workbox.routing.registerRoute(
         new RegExp('^https://(?:t|i)\.moely\.link'),
         new workbox.strategies.CacheFirst({
@@ -91,7 +89,19 @@ if (workbox) {
             ],
         })
     );
-
+    // Bing Img
+    workbox.routing.registerRoute(
+        new RegExp('^https://bing\.img\.run'),
+        new workbox.strategies.CacheFirst({
+            cacheName: 'bing' + cacheVersion,
+            plugins: [
+                new workbox.expiration.ExpirationPlugin({
+                    maxEntries: maxEntries,
+                    maxAgeSeconds: 7 * 24 * 60 * 60,
+                }),
+            ],
+        })
+    );
     // 后缀匹配，针对其余没有被域名匹配到的静态文件
     workbox.routing.registerRoute(
         new RegExp('.*\.(?:png|jpg|jpeg|svg|gif|webp|ico)'),
