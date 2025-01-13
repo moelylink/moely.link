@@ -1,8 +1,14 @@
-document.addEventListener('DOMContentLoaded', (event) => {
+document.addEventListener('DOMContentLoaded', async () => {
     const supabaseUrl = 'https://fefckqwvcvuadiixvhns.supabase.co';
     const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZlZmNrcXd2Y3Z1YWRpaXh2aG5zIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzYzNDE5OTUsImV4cCI6MjA1MTkxNzk5NX0.-OUllwH7v2K-j4uIx7QQaV654R5Gz5_1jP4BGdkWWfg';
     const client = supabase.createClient(supabaseUrl, supabaseKey);
-    
+
+    const { data: { session }, error } = await client.auth.getSession();
+    if (session) {
+        window.location.href = '/user/';
+        return;
+    }
+
     let notificationCount = 0;
     const notifications = new Set();
 
