@@ -25,6 +25,9 @@
 .login-wrapper {
     position: relative;
     z-index: 1;
+    transform: scale(1);
+    transition: transform 0.3s ease;
+    margin: 100px auto 20px auto;
 }
 
 .auth-container {
@@ -275,7 +278,7 @@ a:hover {
 }
 
 .h-captcha {
-    margin: 1px 0 10px 0;
+    margin: 5px 0 10px 0;
     display: flex;
     justify-content: center;
 }
@@ -297,12 +300,10 @@ a:hover {
     line-height: 1.5;
 }
 
-/* 移动端切换按钮默认隐藏 */
 .mobile-switch {
     display: none;
 }
 
-/* 响应式布局 */
 @media screen and (max-width: 768px) {
     .login {
         padding: 20px;
@@ -314,6 +315,7 @@ a:hover {
         justify-content: center;
         align-items: flex-start;
         padding-top: 40px;
+        transform: scale(0.9);
     }
 
     .auth-container {
@@ -401,12 +403,11 @@ a:hover {
     }
 
     .h-captcha {
-        margin: 14px 0;
+        margin: 5px 0;
         transform: scale(0.9);
         transform-origin: center;
     }
 
-    /* 移动端显示切换按钮 */
     .mobile-switch {
         display: block;
         text-align: center;
@@ -438,11 +439,15 @@ a:hover {
 
     .h-captcha {
         transform: scale(0.85);
-        margin: 12px 0;
+        margin: 5px 0;
     }
 
     .forms-container {
         min-height: 500px;
+    }
+
+    .login-wrapper {
+        transform: scale(0.8);
     }
 }
 
@@ -479,4 +484,56 @@ a:hover {
 .third-party-login .btn:hover {
     border-color: #aaa;
     transform: scale(1.1);
+}
+
+#login-password {
+    margin-bottom: 8px;
+}
+
+@media screen and (max-height: 700px) {
+    .login-wrapper {
+        transform: scale(0.8);
+    }
+}
+
+@media screen and (max-height: 600px) {
+    .login-wrapper {
+        transform: scale(0.7);
+    }
+}
+
+@media screen and (max-height: 500px) {
+    .login-wrapper {
+        transform: scale(0.6);
+    }
+}
+
+@media screen and (max-height: 400px) {
+    .login-wrapper {
+        transform: scale(0.5);
+    }
+}
+
+@media screen and (max-height: 300px) {
+    .login-wrapper {
+        transform: scale(0.4);
+    }
+}
+
+@media screen and (max-height: 200px) {
+    .login-wrapper {
+        transform: scale(0.3);
+    }
+}
+
+@media screen and (max-height: 100px) {
+    .login-wrapper {
+        transform: scale(0.2);
+    }
+}
+
+@media screen and (max-height: 0px) {
+    .login-wrapper {
+        transform: scale(0.1);
+    }
 }
