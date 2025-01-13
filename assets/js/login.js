@@ -339,7 +339,6 @@ document.addEventListener('DOMContentLoaded', (event) => {
             const { data, error } = await client.auth.signInWithOAuth({
                 provider: 'google',
                 options: {
-                    scopes: 'email',
                     redirectTo: `https://www.moely.link/user/`,
                 },
             })              
