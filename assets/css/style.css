@@ -2225,7 +2225,7 @@ header.sticky .logo-brand,
 
 /*side-push-nav*/
 .side-push-nav .container {
-    width: 1170px;
+    width: 1200px;
 }
 
 .side-push-nav .wrapper,
@@ -2240,30 +2240,30 @@ body {
 }
 
 .body_has-navbar-left .container {
-    max-width: 1170px;
+    max-width: 1000px;
 }
 
-@media (min-width: 768px) {
+@media (min-width: 800px) {
     .body_has-navbar-left .container {
-        max-width: 505px;
+        max-width: 700px;
     }
 }
 
-@media (min-width: 1012px) {
+@media (min-width: 1000px) {
     .body_has-navbar-left .container {
-        max-width: 750px;
+        max-width: 900px;
     }
 }
 
-@media (min-width: 1230px) {
+@media (min-width: 1200px) {
     .body_has-navbar-left .container {
-        max-width: 970px;
+        max-width: 1000px;
     }
 }
 
-@media (min-width: 1430px) {
+@media (min-width: 1400px) {
     .body_has-navbar-left .container {
-        max-width: 1170px;
+        max-width: 1200px;
     }
 }
 
@@ -2271,7 +2271,7 @@ body {
     max-width: 50%;
 }
 
-@media (min-width: 660px) {
+@media (min-width: 720px) {
     .body_has-navbar-left .portfolio .portfolio-item {
         width: 33.33333333%;
     }
@@ -2283,7 +2283,7 @@ body {
     }
 }
 
-@media (min-width: 1600px) {
+@media (min-width: 1400px) {
     .body_has-navbar-left .portfolio .portfolio-item {
         width: 20%;
     }
