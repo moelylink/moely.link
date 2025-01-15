@@ -1,3 +1,7 @@
+html {
+    scroll-behavior: smooth;
+}
+
 .login {
     position: fixed;
     top: 0;
@@ -530,4 +534,33 @@ a:hover {
     .login-wrapper {
         transform: scale(0.1);
     }
+}
+
+/*-------------------------
+      RETURN TO TOP
+-------------------------*/
+.float-right{
+    position:fixed;
+    bottom: 60px;
+    right: 20px;
+    z-index: 999;
+    text-align: center;
+    padding: bottom 40px;
+    transition: .3s;
+}
+.float-right .float-btn{
+    width: 40px;
+    line-height: 40px;
+    display: block;
+    font-size: 1em;
+    color: #FFFFFF;
+    background-color: rgba(140, 110, 212, 0.5);
+    position: relative;
+}
+.float-btn:hover{
+    background-color: #ff9624;
+}
+.float-right.round .float-btn{
+    margin-top: 10px;
+    border-radius: 10px;
 }
