@@ -536,9 +536,6 @@ a:hover {
     }
 }
 
-/*-------------------------
-      RETURN TO TOP
--------------------------*/
 .float-right{
     position:fixed;
     bottom: 60px;
@@ -563,4 +560,20 @@ a:hover {
 .float-right.round .float-btn{
     margin-top: 10px;
     border-radius: 10px;
+}
+
+.quick-jump{
+    text-align: center;
+    line-height: 30px;
+    font-size: 16px;
+    margin-bottom: 20px;
+}
+.jumpbtn {
+    background-color: #00ff48;
+    color: #000;
+    border-radius: 5px;
+}
+.jumpbtn:hover {
+    background-color: #000000;
+    color: #ffffff;
 }
