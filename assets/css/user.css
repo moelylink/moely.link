@@ -569,11 +569,19 @@ a:hover {
     margin-bottom: 20px;
 }
 .jumpbtn {
-    background-color: #00ff48;
-    color: #000;
+    background-color: rgb(255, 0, 180);
+    color: #fff;
     border-radius: 5px;
+    padding: 3px 10px;
+    border: none;
+    font-size: 12px;
+    cursor: pointer;
+    transition: background-color 0.3s, color 0.3s, transform 0.3s;
 }
+
 .jumpbtn:hover {
-    background-color: #000000;
-    color: #ffffff;
+    background-color: rgb(200, 0, 140);
+    color: #fff;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
