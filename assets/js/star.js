@@ -47,7 +47,7 @@ async function loadFavorites(userId) {
                                 <img class="img-item lazyload" data-src="${item.image}" src="/assets/img/loading.gif" alt="Image"></img>
                             </a>
                             <div class="widget-tags" style="background-color: rgba(0,0,0,0.3);">
-                                <span>创建于: ${new Date(item.created_at).toLocaleDateString()}</span>
+                                <span>收藏于: ${new Date(item.created_at).toLocaleDateString()}</span>
                             </div>
                         </div>
                     </div>
@@ -57,32 +57,5 @@ async function loadFavorites(userId) {
         }
     } catch (error) {
         console.error('Error loading bookmarks:', error);
-    }
-}
-
-function setupThirdPartyLinks() {
-    const githubLink = document.getElementById('github-link');
-    const microsoftLink = document.getElementById('microsoft-link');
-    const googleLink = document.getElementById('google-link');
-
-    if (githubLink) {
-        githubLink.addEventListener('click', async () => {
-            const { error } = await client.auth.signInWithOAuth({ provider: 'github' });
-            if (error) console.error('Error linking GitHub:', error);
-        });
-    }
-
-    if (microsoftLink) {
-        microsoftLink.addEventListener('click', async () => {
-            const { error } = await client.auth.signInWithOAuth({ provider: 'microsoft' });
-            if (error) console.error('Error linking Microsoft:', error);
-        });
-    }
-
-    if (googleLink) {
-        googleLink.addEventListener('click', async () => {
-            const { error } = await client.auth.signInWithOAuth({ provider: 'google' });
-            if (error) console.error('Error linking Google:', error);
-        });
     }
 }
