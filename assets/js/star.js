@@ -13,6 +13,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
         const user = session.user;
         loadFavorites(user.id);
+        setupThirdPartyLinks();
     } catch (error) {
         console.error('Error loading session:', error);
     }
@@ -24,13 +25,13 @@ document.addEventListener('DOMContentLoaded', async () => {
  */
 async function loadFavorites(userId) {
     try {
-        const { data: favorites, error } = await client
-            .from('favorites') // 名为 favorites 的表，并且表中有 user_id、id、image_url、title 和 tags 字段
-            .select('id, image_url, title, tags')
+        const { data: bookmarks, error } = await client
+            .from('bookmarks')
+            .select('id, url, image, created_at')
             .eq('user_id', userId);
 
         if (error) {
-            console.error('Error fetching favorites:', error);
+            console.error('Error fetching bookmarks:', error);
             return;
         }
 
@@ -38,15 +39,15 @@ async function loadFavorites(userId) {
         if (portfolioContainer) {
             portfolioContainer.innerHTML = '';
 
-            favorites.forEach(item => {
+            bookmarks.forEach(item => {
                 const itemHtml = `
                     <div class="portfolio-item">
                         <div class="thumb">
-                            <a href="/favorites/${item.id}/">
-                                <img class="img-item lazyload" data-src="${item.image_url}" src="/assets/img/loading.gif" alt="${item.title}"></img>
+                            <a href="${item.url}">
+                                <img class="img-item lazyload" data-src="${item.image}" src="/assets/img/loading.gif" alt="Image"></img>
                             </a>
                             <div class="widget-tags" style="background-color: rgba(0,0,0,0.3);">
-                                ${item.tags.map(tag => `<span><a href="/tags/${tag}/" rel="tag">#${tag}</a></span>`).join('')}
+                                <span>创建于: ${new Date(item.created_at).toLocaleDateString()}</span>
                             </div>
                         </div>
                     </div>
@@ -55,6 +56,33 @@ async function loadFavorites(userId) {
             });
         }
     } catch (error) {
-        console.error('Error loading favorites:', error);
+        console.error('Error loading bookmarks:', error);
+    }
+}
+
+function setupThirdPartyLinks() {
+    const githubLink = document.getElementById('github-link');
+    const microsoftLink = document.getElementById('microsoft-link');
+    const googleLink = document.getElementById('google-link');
+
+    if (githubLink) {
+        githubLink.addEventListener('click', async () => {
+            const { error } = await client.auth.signInWithOAuth({ provider: 'github' });
+            if (error) console.error('Error linking GitHub:', error);
+        });
+    }
+
+    if (microsoftLink) {
+        microsoftLink.addEventListener('click', async () => {
+            const { error } = await client.auth.signInWithOAuth({ provider: 'microsoft' });
+            if (error) console.error('Error linking Microsoft:', error);
+        });
+    }
+
+    if (googleLink) {
+        googleLink.addEventListener('click', async () => {
+            const { error } = await client.auth.signInWithOAuth({ provider: 'google' });
+            if (error) console.error('Error linking Google:', error);
+        });
     }
 }
