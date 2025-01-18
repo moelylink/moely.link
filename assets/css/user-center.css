@@ -91,7 +91,7 @@ h1.center-align {
 }
 
 h5 {
-    font-size: 1.8rem;
+    font-size: 1.5rem;
     color: #555;
     margin-bottom: 15px;
     cursor: pointer;
@@ -103,7 +103,7 @@ h5:hover {
 }
 
 .user-info p {
-    font-size: 1.2rem;
+    font-size: 1.4rem;
     color: #666;
     margin: 5px 0;
 }
