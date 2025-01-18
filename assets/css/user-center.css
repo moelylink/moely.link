@@ -22,6 +22,44 @@
     margin: 0 auto;
 }
 
+@media screen and (max-width: 768px) {
+    .card-panel {
+        width: 400px;
+        height: 650px;
+    }
+
+    h1.center-align {
+        font-size: 2.5rem;
+    }
+
+    h5 {
+        font-size: 1.5rem;
+    }
+
+    .btn {
+        font-size: 1rem;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .card-panel {
+        padding: 15px;
+        max-width: 95%;
+    }
+
+    h1.center-align {
+        font-size: 2rem;
+    }
+
+    h5 {
+        font-size: 1.2rem;
+    }
+
+    .btn {
+        font-size: 0.9rem;
+    }
+}
+
 .settings-list {
     margin-top: 20px;
 }
@@ -175,4 +213,14 @@ h5:hover {
 .logout-btn:hover {
     background-color: #d32f2f;
     transform: translateY(-2px);
+}
+
+.container-fluid {
+    box-shadow: none;
+    background-color: transparent;
+}
+
+.menuzord {
+    box-shadow: none;
+    background-color: transparent;
 }

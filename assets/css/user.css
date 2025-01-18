@@ -2,6 +2,11 @@ html {
     scroll-behavior: smooth;
 }
 
+.nav {
+    display: block;
+    unicode-bidi: isolate;
+}
+
 .login {
     position: fixed;
     top: 0;
