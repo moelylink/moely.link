@@ -558,3 +558,8 @@ a:hover {
     transform: translateY(-2px);
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
+
+.purple-btn {
+    background-color: rgb(90,0,255);
+    color: #fff;
+}
