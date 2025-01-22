@@ -61,12 +61,12 @@ async function loadFavorites(userId, page = 1) {
                     <div class="portfolio-item" data-id="${item.id}">
                         <div class="thumb">
                             <a href="${item.url}">
-                                <img class="img-item lazyload" data-src="${item.image}" src="/assets/img/loading.gif" alt="Image"></img>
+                                <img class="img-item lazyload" src="${item.image}" alt="Image"></img>
                             </a>
                             <div class="widget-tags" style="background-color: rgba(0,0,0,0.3);">
                                 <span>收藏于: ${new Date(item.created_at).toLocaleDateString()}</span>
+                                <button class="delete-btn" onclick="deleteBookmark('${item.id}')">删除</button>
                             </div>
-                            <button class="delete-btn" onclick="deleteBookmark('${item.id}')">删除</button>
                         </div>
                     </div>
                 `;
@@ -124,17 +124,26 @@ async function setupPagination(userId, currentPage, itemsPerPage) {
 
     const totalPages = Math.ceil(count / itemsPerPage);
     const paginationContainer = document.querySelector('.pagination');
-    if (paginationContainer) {
-        paginationContainer.innerHTML = '';
+    const quickJumpContainer = document.querySelector('.quick-jump');
 
-        for (let i = 1; i <= totalPages; i++) {
-            const pageLink = document.createElement('a');
-            pageLink.href = `?page=${i}`;
-            pageLink.textContent = i;
-            if (i === currentPage) {
-                pageLink.classList.add('active');
+    if (paginationContainer && quickJumpContainer) {
+        if (totalPages <= 1) {
+            paginationContainer.style.display = 'none';
+            quickJumpContainer.style.display = 'none';
+        } else {
+            paginationContainer.style.display = 'block';
+            quickJumpContainer.style.display = 'block';
+            paginationContainer.innerHTML = '';
+
+            for (let i = 1; i <= totalPages; i++) {
+                const pageLink = document.createElement('a');
+                pageLink.href = `?page=${i}`;
+                pageLink.textContent = i;
+                if (i === currentPage) {
+                    pageLink.classList.add('active');
+                }
+                paginationContainer.appendChild(pageLink);
             }
-            paginationContainer.appendChild(pageLink);
         }
     }
 }
