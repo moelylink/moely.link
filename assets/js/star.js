@@ -1,5 +1,5 @@
 const supabaseUrl = 'https://fefckqwvcvuadiixvhns.supabase.co';
-const supabaseKey = 'YOUR_SUPABASE_KEY';
+const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZlZmNrcXd2Y3Z1YWRpaXh2aG5zIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzYzNDE5OTUsImV4cCI6MjA1MTkxNzk5NX0.-OUllwH7v2K-j4uIx7QQaV654R5Gz5_1jP4BGdkWWfg';
 const client = supabase.createClient(supabaseUrl, supabaseKey);
 
 document.addEventListener('DOMContentLoaded', async () => {
@@ -58,7 +58,7 @@ async function loadFavorites(userId, page = 1) {
 
             bookmarks.forEach(item => {
                 const itemHtml = `
-                    <div class="portfolio-item">
+                    <div class="portfolio-item" data-id="${item.id}">
                         <div class="thumb">
                             <a href="${item.url}">
                                 <img class="img-item lazyload" data-src="${item.image}" src="/assets/img/loading.gif" alt="Image"></img>
@@ -66,6 +66,7 @@ async function loadFavorites(userId, page = 1) {
                             <div class="widget-tags" style="background-color: rgba(0,0,0,0.3);">
                                 <span>收藏于: ${new Date(item.created_at).toLocaleDateString()}</span>
                             </div>
+                            <button class="delete-btn" onclick="deleteBookmark('${item.id}')">删除</button>
                         </div>
                     </div>
                 `;
@@ -76,6 +77,31 @@ async function loadFavorites(userId, page = 1) {
         }
     } catch (error) {
         console.error('Error loading bookmarks:', error);
+    }
+}
+
+/**
+ * 删除书签
+ * @param {string} bookmarkId - 书签ID
+ */
+async function deleteBookmark(bookmarkId) {
+    try {
+        const { error } = await client
+            .from('bookmarks')
+            .delete()
+            .eq('id', bookmarkId);
+
+        if (error) {
+            console.error('Error deleting bookmark:', error);
+            alert('删除失败，请重试');
+        } else {
+            alert('删除成功');
+            const page = getPageFromUrl();
+            const user = await client.auth.getUser();
+            loadFavorites(user.data.user.id, page);
+        }
+    } catch (error) {
+        console.error('Error deleting bookmark:', error);
     }
 }
 
