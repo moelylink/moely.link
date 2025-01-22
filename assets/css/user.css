@@ -33,9 +33,12 @@ html {
 .login-wrapper {
     position: relative;
     z-index: 1;
+    width: 90%;
+    max-width: 900px;
     transform: scale(1);
     transition: transform 0.3s ease;
-    margin: 10px 0 20px 0;
+    max-height: 75%;
+    margin: 20px 0 20px 0;
 }
 
 .auth-container {
@@ -44,8 +47,8 @@ html {
     box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
     position: relative;
     overflow: hidden;
-    width: 900px;
-    max-width: 100%;
+    width: 100%;
+    max-width: 900px;
     min-height: 600px;
 }
 
