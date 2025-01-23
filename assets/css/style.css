@@ -6423,6 +6423,10 @@ address p {
     background-color: #549da5;
     color: white;
 }
+.btn-star {
+    background-color: #bf60fe;
+    color: white;
+}
 .btn:hover {
     opacity: 0.9;
 }
