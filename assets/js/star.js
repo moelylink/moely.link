@@ -52,31 +52,46 @@ async function loadFavorites(userId, page = 1) {
             return;
         }
 
-        const portfolioContainer = document.querySelector('.portfolio');
+        const portfolioContainer = document.querySelector('.items');
         if (portfolioContainer) {
             portfolioContainer.innerHTML = '';
 
             bookmarks.forEach(item => {
-                const itemHtml = `
-                    <div class="portfolio-item" data-id="${item.id}">
-                        <div class="thumb">
-                            <a href="${item.url}">
-                                <img class="img-item lazyload" src="${item.image}" alt="Image"></img>
-                            </a>
-                            <div class="widget-tags" style="background-color: rgba(0,0,0,0.3);">
-                                <span>收藏于: ${new Date(item.created_at).toLocaleDateString()}</span>
-                                <button class="delete-btn" onclick="deleteBookmark('${item.id}')">删除</button>
-                            </div>
-                        </div>
-                    </div>
-                `;
-                portfolioContainer.insertAdjacentHTML('beforeend', itemHtml);
+                const portfolioItem = document.createElement('div');
+                portfolioItem.className = 'portfolio-item';
+
+                const link = document.createElement('a');
+                link.href = item.url;
+
+                const img = document.createElement('img');
+                img.className = 'img-item lazyload';
+                img.setAttribute('data-src', item.image);
+                img.src = '/assets/img/loading.gif';
+
+                const widgetTags = document.createElement('div');
+                widgetTags.className = 'widget-tags';
+                widgetTags.style.backgroundColor = 'rgba(0,0,0,0.3)';
+
+                const span = document.createElement('span');
+                span.textContent = `收藏时间: ${new Date(item.created_at).toLocaleDateString()}`;
+
+                const deleteButton = document.createElement('button');
+                deleteButton.className = 'delete-btn';
+                deleteButton.textContent = '删除';
+                deleteButton.onclick = () => deleteBookmark(item.id);
+
+                widgetTags.appendChild(span);
+                widgetTags.appendChild(deleteButton);
+                link.appendChild(img);
+                portfolioItem.appendChild(link);
+                portfolioItem.appendChild(widgetTags);
+                portfolioContainer.appendChild(portfolioItem);
             });
 
             setupPagination(userId, page, itemsPerPage);
         }
     } catch (error) {
-        console.error('Error loading bookmarks:', error);
+        console.error('Error loading favorites:', error);
     }
 }
 
@@ -148,21 +163,38 @@ async function setupPagination(userId, currentPage, itemsPerPage) {
     }
 }
 
-function quickjump() {
-    const pagenum = document.getElementById("jumpTo").value.trim();
-    const urlParams = new URLSearchParams(window.location.search);
-    const currentPage = parseInt(urlParams.get('page'), 10) || 1;
-    const baseUrl = window.location.href.split('?')[0];
+document.addEventListener('DOMContentLoaded', () => {
+    const portfolioItems = document.querySelectorAll('.portfolio-item');
 
-    if (pagenum === '' || isNaN(pagenum) || pagenum < 1) {
-        alert('请输入有效的页码');
-        return;
-    }
+    portfolioItems.forEach(item => {
+        const thumb = item.querySelector('.thumb');
+        const widgetTags = item.querySelector('.widget-tags');
 
-    const newPage = parseInt(pagenum, 10);
-    if (newPage === 1) {
-        window.location.href = baseUrl;
-    } else {
-        window.location.href = `${baseUrl}?page=${newPage}`;
+        thumb.addEventListener('mouseenter', () => {
+            widgetTags.style.display = 'block';
+            widgetTags.style.opacity = '1';
+        });
+
+        thumb.addEventListener('mouseleave', () => {
+            widgetTags.style.display = 'none';
+            widgetTags.style.opacity = '0';
+        });
+    });
+});
+
+async function addFavorite(userId, imageId, imageUrl) {
+    try {
+        const { error } = await client
+            .from('bookmarks')
+            .insert([{ user_id: userId, image_id: imageId, image: imageUrl, created_at: new Date().toISOString() }]);
+
+        if (error) {
+            console.error('Error adding favorite:', error);
+            alert('添加收藏失败，请重试');
+        } else {
+            alert('已添加到收藏');
+        }
+    } catch (error) {
+        console.error('Error adding favorite:', error);
     }
 }

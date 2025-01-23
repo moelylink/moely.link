@@ -1,10 +1,10 @@
-.container {
+.uc-container {
     max-width: 1200px;
     margin: 0 auto;
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100vh;
+    height: 85vh;
 }
 
 .row {
