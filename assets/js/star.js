@@ -21,25 +21,10 @@ document.addEventListener('DOMContentLoaded', async () => {
 });
 
 /**
- * 从 URL 获取当前页码
- * @returns {number} 当前页码
- */
-function getPageFromUrl() {
-    const urlParams = new URLSearchParams(window.location.search);
-    const page = parseInt(urlParams.get('page'), 10);
-    return isNaN(page) || page < 1 ? 1 : page;
-}
-
-/**
  * 从 Supabase 加载用户的书签并显示
  * @param {string} userId - 用户ID
- * @param {number} page - 当前页码
  */
-async function loadFavorites(userId, page = 1) {
-    const itemsPerPage = 20;
-    const from = (page - 1) * itemsPerPage;
-    const to = from + itemsPerPage - 1;
-
+async function loadFavorites(userId,) {
     try {
         const { data: bookmarks, error } = await client
             .from('bookmarks')
