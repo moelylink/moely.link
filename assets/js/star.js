@@ -2,6 +2,72 @@ const supabaseUrl = 'https://fefckqwvcvuadiixvhns.supabase.co';
 const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZlZmNrcXd2Y3Z1YWRpaXh2aG5zIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzYzNDE5OTUsImV4cCI6MjA1MTkxNzk5NX0.-OUllwH7v2K-j4uIx7QQaV654R5Gz5_1jP4BGdkWWfg';
 const client = supabase.createClient(supabaseUrl, supabaseKey);
 
+let notificationCount = 0;
+const notifications = new Set();
+const style = document.createElement('style');
+style.textContent = `
+    .notification { position: fixed; bottom: 16px; right: 16px; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.15); transition: transform 0.3s cubic-bezier(0.645, 0.045, 0.355, 1); z-index: 1000; width: 300px; height: 48px; backdrop-filter: blur(10px); transform: translateX(calc(100% + 32px)); overflow: hidden; }
+    .notification.show { transform: translateX(0); }
+    .notification-wrapper { width: 100%; height: 100%; display: flex; align-items: center; }
+    .notification-content { flex: 1; padding: 0 16px; z-index: 2; background: white; height: 100%; display: flex; align-items: center; }
+    .notification-content p { margin: 0; padding: 0; font-size: 14px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .notification-icon { width: 48px; display: flex; align-items: center; justify-content: center; z-index: 1; height: 100%; }
+    .notification-icon .material-icons-round { font-size: 20px; color: white; }
+    .notification.error .notification-icon { background: #ff4d4f; }
+    .notification.error .notification-content p { color: #cf1322; }
+    .notification.success .notification-icon { background: #52c41a; }
+    .notification.success .notification-content p { color: #389e0d; }
+    .notification.warning .notification-icon { background: #faad14; }
+    .notification.warning .notification-content p { color: #d48806; }
+`;
+document.head.appendChild(style);
+
+function showMessage(message, type = 'info') {
+    const notification = document.createElement('div');
+    notification.className = `notification ${type}`;
+    
+    const icon = type === 'success' ? 'check_circle' : 
+                type === 'error' ? 'error' : 
+                'warning';
+    notification.innerHTML = `
+        <div class="notification-wrapper">
+            <div class="notification-icon">
+                <span class="material-icons-round">${icon}</span>
+            </div>
+            <div class="notification-content">
+                <p>${message}</p>
+            </div>
+        </div>
+    `;
+
+    document.body.appendChild(notification);
+    notifications.add(notification);
+    updateNotificationsPosition();
+    
+    setTimeout(() => {
+        notification.classList.add('show');
+    }, 10);
+    
+    setTimeout(() => {
+        notification.classList.remove('show');
+        setTimeout(() => {
+            notifications.delete(notification);
+            notification.remove();
+            updateNotificationsPosition();
+        }, 300);
+    }, 3000);
+}
+
+function updateNotificationsPosition() {
+    const notificationsArray = Array.from(notifications);
+    for (let i = notificationsArray.length - 1; i >= 0; i--) {
+        const notification = notificationsArray[i];
+        const offset = 16 + (notificationsArray.length - 1 - i) * 70;
+        notification.style.transition = 'all 0.3s ease-in-out';
+        notification.style.bottom = `${offset}px`;
+    }
+}
+
 document.addEventListener('DOMContentLoaded', async () => {
     try {
         const { data: { session }, error } = await client.auth.getSession();
@@ -13,8 +79,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
         const user = session.user;
         const page = getPageFromUrl();
-        loadFavorites(user.id, page);
-        setupThirdPartyLinks();
+        await loadFavorites(user.id, page);
     } catch (error) {
         console.error('Error loading session:', error);
     }
@@ -24,7 +89,11 @@ document.addEventListener('DOMContentLoaded', async () => {
  * 从 Supabase 加载用户的书签并显示
  * @param {string} userId - 用户ID
  */
-async function loadFavorites(userId,) {
+async function loadFavorites(userId, page = 1) {
+    const itemsPerPage = 20;
+    const from = (page - 1) * itemsPerPage;
+    const to = from + itemsPerPage - 1;
+
     try {
         const { data: bookmarks, error } = await client
             .from('bookmarks')
@@ -37,43 +106,27 @@ async function loadFavorites(userId,) {
             return;
         }
 
-        const portfolioContainer = document.querySelector('.items');
+        const portfolioContainer = document.querySelector('.portfolio');
         if (portfolioContainer) {
-            portfolioContainer.innerHTML = '';
+            let htmlContent = '';
 
             bookmarks.forEach(item => {
-                const portfolioItem = document.createElement('div');
-                portfolioItem.className = 'portfolio-item';
-
-                const link = document.createElement('a');
-                link.href = item.url;
-
-                const img = document.createElement('img');
-                img.className = 'img-item lazyload';
-                img.setAttribute('data-src', item.image);
-                img.src = '/assets/img/loading.gif';
-
-                const widgetTags = document.createElement('div');
-                widgetTags.className = 'widget-tags';
-                widgetTags.style.backgroundColor = 'rgba(0,0,0,0.3)';
-
-                const span = document.createElement('span');
-                span.textContent = `收藏时间: ${new Date(item.created_at).toLocaleDateString()}`;
-
-                const deleteButton = document.createElement('button');
-                deleteButton.className = 'delete-btn';
-                deleteButton.textContent = '删除';
-                deleteButton.onclick = () => deleteBookmark(item.id);
-
-                widgetTags.appendChild(span);
-                widgetTags.appendChild(deleteButton);
-                link.appendChild(img);
-                portfolioItem.appendChild(link);
-                portfolioItem.appendChild(widgetTags);
-                portfolioContainer.appendChild(portfolioItem);
+                htmlContent += `
+                    <div class="portfolio-item">
+                        <div class="thumb">
+                            <a href="${item.url}">
+                                <img class="img-item lazyload" data-src="${item.image}" src="/assets/img/loading.gif" alt="Image">
+                            </a>
+                            <div class="widget-tags" style="background-color: rgba(0,0,0,0.3);">
+                                <span>收藏时间: ${new Date(item.created_at).toLocaleDateString()}</span>
+                                <button class="delete-btn" onclick="deleteBookmark('${item.id}')">删除</button>
+                            </div>
+                        </div>
+                    </div>
+                `;
             });
 
-            setupPagination(userId, page, itemsPerPage);
+            portfolioContainer.innerHTML = htmlContent;
         }
     } catch (error) {
         console.error('Error loading favorites:', error);
@@ -93,59 +146,22 @@ async function deleteBookmark(bookmarkId) {
 
         if (error) {
             console.error('Error deleting bookmark:', error);
-            alert('删除失败，请重试');
+            showMessage('删除失败，请重试', 'error');
         } else {
-            alert('删除成功');
+            showMessage('删除成功', 'success');
             const page = getPageFromUrl();
             const user = await client.auth.getUser();
-            loadFavorites(user.data.user.id, page);
+            await loadFavorites(user.data.user.id, page);
         }
     } catch (error) {
         console.error('Error deleting bookmark:', error);
     }
 }
 
-/**
- * 设置分页控件
- * @param {string} userId - 用户ID
- * @param {number} currentPage - 当前页码
- * @param {number} itemsPerPage - 每页项目数
- */
-async function setupPagination(userId, currentPage, itemsPerPage) {
-    const { count, error } = await client
-        .from('bookmarks')
-        .select('id', { count: 'exact', head: true })
-        .eq('user_id', userId);
-
-    if (error) {
-        console.error('Error fetching bookmark count:', error);
-        return;
-    }
-
-    const totalPages = Math.ceil(count / itemsPerPage);
-    const paginationContainer = document.querySelector('.pagination');
-    const quickJumpContainer = document.querySelector('.quick-jump');
-
-    if (paginationContainer && quickJumpContainer) {
-        if (totalPages <= 1) {
-            paginationContainer.style.display = 'none';
-            quickJumpContainer.style.display = 'none';
-        } else {
-            paginationContainer.style.display = 'block';
-            quickJumpContainer.style.display = 'block';
-            paginationContainer.innerHTML = '';
-
-            for (let i = 1; i <= totalPages; i++) {
-                const pageLink = document.createElement('a');
-                pageLink.href = `?page=${i}`;
-                pageLink.textContent = i;
-                if (i === currentPage) {
-                    pageLink.classList.add('active');
-                }
-                paginationContainer.appendChild(pageLink);
-            }
-        }
-    }
+function getPageFromUrl() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const page = parseInt(urlParams.get('page'), 10);
+    return isNaN(page) || page < 1 ? 1 : page;
 }
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -166,20 +182,3 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 });
-
-async function addFavorite(userId, imageId, imageUrl) {
-    try {
-        const { error } = await client
-            .from('bookmarks')
-            .insert([{ user_id: userId, image_id: imageId, image: imageUrl, created_at: new Date().toISOString() }]);
-
-        if (error) {
-            console.error('Error adding favorite:', error);
-            alert('添加收藏失败，请重试');
-        } else {
-            alert('已添加到收藏');
-        }
-    } catch (error) {
-        console.error('Error adding favorite:', error);
-    }
-}
