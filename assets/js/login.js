@@ -86,7 +86,6 @@ document.addEventListener('DOMContentLoaded', async () => {
             e.preventDefault();
             const useremail = document.getElementById('login-email').value.trim();
             const userpwd = document.getElementById('login-password').value.trim();
-            const hcaptchaResponse = document.querySelector("[name='h-captcha-response']").value;
 
             if (!useremail) {
                 showMessage('请输入邮箱！', 'warning');
@@ -100,28 +99,56 @@ document.addEventListener('DOMContentLoaded', async () => {
                 showMessage('密码长度必须大于8位！', 'warning');
                 return;
             }
-            if (!hcaptchaResponse) { 
-                showMessage('请完成人机验证！', 'warning');
-                return; 
-            }
 
-            const { data, error } = await client.auth.signInWithPassword({
-                email: useremail,
-                password: userpwd,
-                options: {
-                    captchaToken: hcaptchaResponse
-                }
-            });
-            if (error) {
-                showMessage(error.message, 'error');
-                if (window.hcaptcha) {
-                    window.hcaptcha.reset();
-                }
-            } else {
-                showMessage('登录成功！', 'success');
-                setTimeout(() => {
-                    window.location.href = '/user/';
-                }, 3000);
+            // 创建验证码容器
+            const captchaContainer = document.createElement('div');
+            captchaContainer.className = 'captcha-container';
+            captchaContainer.style.display = 'flex';
+            
+            const captchaWrapper = document.createElement('div');
+            captchaWrapper.className = 'captcha-wrapper';
+            
+            // 创建新的 hCaptcha 元素
+            const hcaptchaDiv = document.createElement('div');
+            hcaptchaDiv.className = 'h-captcha';
+            hcaptchaDiv.setAttribute('data-sitekey', '8f124646-ac04-496c-85b6-6396e8b8da3c');
+            
+            captchaWrapper.appendChild(hcaptchaDiv);
+            captchaContainer.appendChild(captchaWrapper);
+            document.body.appendChild(captchaContainer);
+
+            // 重新渲染 hCaptcha
+            if (window.hcaptcha) {
+                const widgetId = window.hcaptcha.render(hcaptchaDiv, {
+                    callback: async (token) => {
+                        const { data, error } = await client.auth.signInWithPassword({
+                            email: useremail,
+                            password: userpwd,
+                            options: {
+                                captchaToken: token
+                            }
+                        });
+
+                        // 移除验证码容器
+                        document.body.removeChild(captchaContainer);
+
+                        if (error) {
+                            showMessage(error.message, 'error');
+                        } else {
+                            showMessage('登录成功！', 'success');
+                            setTimeout(() => {
+                                window.location.href = '/user/';
+                            }, 3000);
+                        }
+                    },
+                    'close-callback': () => {
+                        document.body.removeChild(captchaContainer);
+                    },
+                    'error-callback': () => {
+                        showMessage('验证失败，请重试', 'error');
+                        document.body.removeChild(captchaContainer);
+                    }
+                });
             }
         });
     }
@@ -132,7 +159,6 @@ document.addEventListener('DOMContentLoaded', async () => {
             const useremail = document.getElementById('register-email').value.trim();
             const userpwd = document.getElementById('register-password').value.trim();
             const repeatpwd = document.getElementById('password-repeat').value.trim();
-            const hcaptchaResponse = document.querySelector("[name='h-captcha-response']").value;
             const checkbox = document.getElementById('checkbox');
 
             if (!useremail) {
@@ -155,32 +181,63 @@ document.addEventListener('DOMContentLoaded', async () => {
                 showMessage('请阅读并同意用户协议！', 'warning');
                 return;
             }
-            if (!hcaptchaResponse) { 
-                showMessage('请完成人机验证！', 'warning');
-                return; 
-            }
             if (repeatpwd != userpwd) { 
                 showMessage('两次输入的密码不同！', 'warning');
                 return; 
             }
 
-            const { data, error } = await client.auth.signUp({
-                email: useremail,
-                password: userpwd,
-                options: {
-                    captchaToken: hcaptchaResponse
-                }
-            });
-            if (error) {
-                showMessage(error.message, 'error');
-                if (window.hcaptcha) {
-                    window.hcaptcha.reset();
-                }
-            } else {
-                showMessage('注册成功，请前往邮箱激活您的账号。记得检查垃圾收件箱！', 'success');
-                setTimeout(() => {
-                    window.location.href = '/user/login/';
-                }, 3000);
+            // 创建验证码容器
+            const captchaContainer = document.createElement('div');
+            captchaContainer.className = 'captcha-container';
+            captchaContainer.style.display = 'flex';
+            
+            const captchaWrapper = document.createElement('div');
+            captchaWrapper.className = 'captcha-wrapper';
+            
+            // 创建新的 hCaptcha 元素
+            const hcaptchaDiv = document.createElement('div');
+            hcaptchaDiv.className = 'h-captcha';
+            hcaptchaDiv.setAttribute('data-sitekey', '8f124646-ac04-496c-85b6-6396e8b8da3c');
+            
+            captchaWrapper.appendChild(hcaptchaDiv);
+            captchaContainer.appendChild(captchaWrapper);
+            document.body.appendChild(captchaContainer);
+
+            // 重新渲染 hCaptcha
+            if (window.hcaptcha) {
+                const widgetId = window.hcaptcha.render(hcaptchaDiv, {
+                    callback: async (token) => {
+                        const { data, error } = await client.auth.signUp({
+                            email: useremail,
+                            password: userpwd,
+                            options: {
+                                captchaToken: token
+                            }
+                        });
+
+                        // 移除验证码容器
+                        document.body.removeChild(captchaContainer);
+
+                        if (error) {
+                            showMessage(error.message, 'error');
+                            if (window.hcaptcha) {
+                                window.hcaptcha.reset();
+                            }
+                        } else {
+                            showMessage('注册成功，请前往邮箱激活您的账号。记得检查垃圾收件箱！', 'success');
+                            setTimeout(() => {
+                                window.location.href = '/user/login/';
+                            }, 3000);
+                        }
+                    },
+                    'close-callback': () => {
+                        document.body.removeChild(captchaContainer);
+                    },
+                    'error-callback': () => {
+                        showMessage('验证失败，请重试', 'error');
+                        document.body.removeChild(captchaContainer);
+                    }
+                });
             }
         });
     }
