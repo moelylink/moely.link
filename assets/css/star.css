@@ -25,3 +25,11 @@
 .delete-btn:hover {
     background-color: #d32f2f;
 }
+
+@media (hover: none) {
+    .portfolio-item {
+        -webkit-touch-callout: none; /* 禁用iOS长按菜单 */
+        -webkit-user-select: none;   /* 禁用文本选择 */
+        user-select: none;
+    }
+}

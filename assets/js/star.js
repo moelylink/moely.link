@@ -93,6 +93,7 @@ async function loadFavorites(userId, page = 1) {
     const itemsPerPage = 20;
     const from = (page - 1) * itemsPerPage;
     const to = from + itemsPerPage - 1;
+    const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
 
     try {
         const { data: bookmarks, error } = await client
@@ -111,22 +112,69 @@ async function loadFavorites(userId, page = 1) {
             let htmlContent = '';
 
             bookmarks.forEach(item => {
-                htmlContent += `
-                    <div class="portfolio-item">
-                        <div class="thumb">
-                            <a href="${item.url}">
-                                <img class="img-item lazyload" data-src="${item.image}" src="/assets/img/loading.gif" alt="Image">
-                            </a>
-                            <div class="widget-tags" style="background-color: rgba(0,0,0,0.3);">
-                                <span>收藏时间: ${new Date(item.created_at).toLocaleDateString()}</span>
-                                <button class="delete-btn" onclick="deleteBookmark('${item.id}')">删除</button>
+                if (isMobile) {
+                    // 移动端版本 - 长按触发
+                    htmlContent += `
+                        <div class="portfolio-item" data-bookmark-id="${item.id}">
+                            <div class="thumb">
+                                <a href="${item.url}">
+                                    <img class="img-item lazyload" data-src="${item.image}" src="/assets/img/loading.gif" alt="Image">
+                                </a>
+                                <div class="widget-tags" style="background-color: rgba(0,0,0,0.3);">
+                                    <span>收藏时间: ${new Date(item.created_at).toLocaleDateString()}</span>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                `;
+                    `;
+                } else {
+                    // PC版本 - 悬停显示删除按钮
+                    htmlContent += `
+                        <div class="portfolio-item">
+                            <div class="thumb">
+                                <a href="${item.url}">
+                                    <img class="img-item lazyload" data-src="${item.image}" src="/assets/img/loading.gif" alt="Image">
+                                </a>
+                                <div class="widget-tags" style="background-color: rgba(0,0,0,0.3);">
+                                    <span>收藏时间: ${new Date(item.created_at).toLocaleDateString()}</span>
+                                    <button class="delete-btn" onclick="deleteBookmark('${item.id}')">删除</button>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                }
             });
 
             portfolioContainer.innerHTML = htmlContent;
+
+            // 如果是移动设备，添加长按事件监听
+            if (isMobile) {
+                const portfolioItems = document.querySelectorAll('.portfolio-item');
+                portfolioItems.forEach(item => {
+                    let pressTimer;
+                    const bookmarkId = item.dataset.bookmarkId;
+
+                    item.addEventListener('touchstart', () => {
+                        item.style.opacity = '0.7';
+                        pressTimer = setTimeout(() => {
+                            if (confirm('确定要删除这张图片吗？')) {
+                                deleteBookmark(bookmarkId);
+                            } else {
+                                item.style.opacity = '1';
+                            }
+                        }, 800);
+                    });
+
+                    item.addEventListener('touchend', () => {
+                        clearTimeout(pressTimer);
+                        item.style.opacity = '1';
+                    });
+
+                    item.addEventListener('touchmove', () => {
+                        clearTimeout(pressTimer);
+                        item.style.opacity = '1';
+                    });
+                });
+            }
         }
     } catch (error) {
         console.error('Error loading favorites:', error);
@@ -165,20 +213,22 @@ function getPageFromUrl() {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-    const portfolioItems = document.querySelectorAll('.portfolio-item');
+    if (!/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
+        const portfolioItems = document.querySelectorAll('.portfolio-item');
 
-    portfolioItems.forEach(item => {
-        const thumb = item.querySelector('.thumb');
-        const widgetTags = item.querySelector('.widget-tags');
+        portfolioItems.forEach(item => {
+            const thumb = item.querySelector('.thumb');
+            const widgetTags = item.querySelector('.widget-tags');
 
-        thumb.addEventListener('mouseenter', () => {
-            widgetTags.style.display = 'block';
-            widgetTags.style.opacity = '1';
+            thumb.addEventListener('mouseenter', () => {
+                widgetTags.style.display = 'block';
+                widgetTags.style.opacity = '1';
+            });
+
+            thumb.addEventListener('mouseleave', () => {
+                widgetTags.style.display = 'none';
+                widgetTags.style.opacity = '0';
+            });
         });
-
-        thumb.addEventListener('mouseleave', () => {
-            widgetTags.style.display = 'none';
-            widgetTags.style.opacity = '0';
-        });
-    });
+    }
 });

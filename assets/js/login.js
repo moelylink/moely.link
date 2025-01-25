@@ -186,7 +186,6 @@ document.addEventListener('DOMContentLoaded', async () => {
                 return; 
             }
 
-            // 创建验证码容器
             const captchaContainer = document.createElement('div');
             captchaContainer.className = 'captcha-container';
             captchaContainer.style.display = 'flex';
@@ -194,7 +193,6 @@ document.addEventListener('DOMContentLoaded', async () => {
             const captchaWrapper = document.createElement('div');
             captchaWrapper.className = 'captcha-wrapper';
             
-            // 创建新的 hCaptcha 元素
             const hcaptchaDiv = document.createElement('div');
             hcaptchaDiv.className = 'h-captcha';
             hcaptchaDiv.setAttribute('data-sitekey', '8f124646-ac04-496c-85b6-6396e8b8da3c');
@@ -203,7 +201,6 @@ document.addEventListener('DOMContentLoaded', async () => {
             captchaContainer.appendChild(captchaWrapper);
             document.body.appendChild(captchaContainer);
 
-            // 重新渲染 hCaptcha
             if (window.hcaptcha) {
                 const widgetId = window.hcaptcha.render(hcaptchaDiv, {
                     callback: async (token) => {
@@ -215,7 +212,6 @@ document.addEventListener('DOMContentLoaded', async () => {
                             }
                         });
 
-                        // 移除验证码容器
                         document.body.removeChild(captchaContainer);
 
                         if (error) {
