@@ -7,6 +7,14 @@ html {
     unicode-bidi: isolate;
 }
 
+.container .text-uppercase {
+    margin-left: 20px;
+}
+
+.container .portfolio {
+    margin-top: 0!important;
+}
+
 .login {
     position: fixed;
     top: 0;
@@ -382,7 +390,7 @@ a:hover {
     }
 
     .header {
-        font-size: 24px;
+        font-size: 32px;
         margin-bottom: 20px;
     }
 
@@ -434,7 +442,7 @@ a:hover {
     }
 
     .header {
-        font-size: 22px;
+        font-size: 28px;
         margin-bottom: 18px;
     }
 
