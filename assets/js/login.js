@@ -347,64 +347,154 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     if (githubLogin) {
         githubLogin.addEventListener('click', async () => {
-            const hcaptchaResponse = document.querySelector("[name='h-captcha-response']").value;
-            if (!hcaptchaResponse) { 
-                showMessage('请完成人机验证！', 'warning');
-                return; 
-            }
-            const { data, error } = await client.auth.signInWithOAuth({
-                provider: 'github',
-                options: {
-                    redirectTo: `https://www.moely.link/user/`,
-                },
-            })              
-            if (error) {
-                showMessage(error.message, 'error');
-            } else {
-                showMessage('前往GitHub授权！', 'success');
+            // 创建验证码容器
+            const captchaContainer = document.createElement('div');
+            captchaContainer.className = 'captcha-container';
+            captchaContainer.style.display = 'flex';
+            
+            const captchaWrapper = document.createElement('div');
+            captchaWrapper.className = 'captcha-wrapper';
+            
+            // 创建新的 hCaptcha 元素
+            const hcaptchaDiv = document.createElement('div');
+            hcaptchaDiv.className = 'h-captcha';
+            hcaptchaDiv.setAttribute('data-sitekey', '8f124646-ac04-496c-85b6-6396e8b8da3c');
+            
+            captchaWrapper.appendChild(hcaptchaDiv);
+            captchaContainer.appendChild(captchaWrapper);
+            document.body.appendChild(captchaContainer);
+
+            // 重新渲染 hCaptcha
+            if (window.hcaptcha) {
+                const widgetId = window.hcaptcha.render(hcaptchaDiv, {
+                    callback: async (token) => {
+                        const { data, error } = await client.auth.signInWithOAuth({
+                            provider: 'github',
+                            options: {
+                                redirectTo: `https://www.moely.link/user/`,
+                            },
+                        })
+
+                        // 移除验证码容器
+                        document.body.removeChild(captchaContainer);
+
+                        if (error) {
+                            showMessage(error.message, 'error');
+                        } else {
+                            showMessage('前往GitHub授权！', 'success');
+                        }
+                    },
+                    'close-callback': () => {
+                        document.body.removeChild(captchaContainer);
+                    },
+                    'error-callback': () => {
+                        showMessage('验证失败，请重试', 'error');
+                        document.body.removeChild(captchaContainer);
+                    }
+                });
             }
         });
     }
 
     if (microsoftLogin) {
         microsoftLogin.addEventListener('click', async () => {
-            const hcaptchaResponse = document.querySelector("[name='h-captcha-response']").value;
-            if (!hcaptchaResponse) { 
-                showMessage('请完成人机验证！', 'warning');
-                return; 
-            }
-            const { data, error } = await client.auth.signInWithOAuth({
-                provider: 'azure',
-                options: {
-                    scopes: 'email',
-                    redirectTo: `https://www.moely.link/user/`,
-                },
-            })              
-            if (error) {
-                showMessage(error.message, 'error');
-            } else {
-                showMessage('前往Microsoft授权！', 'success');
+            // 创建验证码容器
+            const captchaContainer = document.createElement('div');
+            captchaContainer.className = 'captcha-container';
+            captchaContainer.style.display = 'flex';
+            
+            const captchaWrapper = document.createElement('div');
+            captchaWrapper.className = 'captcha-wrapper';
+            
+            // 创建新的 hCaptcha 元素
+            const hcaptchaDiv = document.createElement('div');
+            hcaptchaDiv.className = 'h-captcha';
+            hcaptchaDiv.setAttribute('data-sitekey', '8f124646-ac04-496c-85b6-6396e8b8da3c');
+            
+            captchaWrapper.appendChild(hcaptchaDiv);
+            captchaContainer.appendChild(captchaWrapper);
+            document.body.appendChild(captchaContainer);
+
+            // 重新渲染 hCaptcha
+            if (window.hcaptcha) {
+                const widgetId = window.hcaptcha.render(hcaptchaDiv, {
+                    callback: async (token) => {
+                        const { data, error } = await client.auth.signInWithOAuth({
+                            provider: 'azure',
+                            options: {
+                                scopes: 'email',
+                                redirectTo: `https://www.moely.link/user/`,
+                            },
+                        })
+
+                        // 移除验证码容器
+                        document.body.removeChild(captchaContainer);
+
+                        if (error) {
+                            showMessage(error.message, 'error');
+                        } else {
+                            showMessage('前往Microsoft授权！', 'success');
+                        }
+                    },
+                    'close-callback': () => {
+                        document.body.removeChild(captchaContainer);
+                    },
+                    'error-callback': () => {
+                        showMessage('验证失败，请重试', 'error');
+                        document.body.removeChild(captchaContainer);
+                    }
+                });
             }
         });
     }
 
     if (googleLogin) {
         googleLogin.addEventListener('click', async () => {
-            const hcaptchaResponse = document.querySelector("[name='h-captcha-response']").value;
-            if (!hcaptchaResponse) { 
-                showMessage('请完成人机验证！', 'warning');
-                return; 
-            }
-            const { data, error } = await client.auth.signInWithOAuth({
-                provider: 'google',
-                options: {
-                    redirectTo: `https://www.moely.link/user/`,
-                },
-            })              
-            if (error) {
-                showMessage(error.message, 'error');
-            } else {
-                showMessage('前往Google授权！', 'success');
+            // 创建验证码容器
+            const captchaContainer = document.createElement('div');
+            captchaContainer.className = 'captcha-container';
+            captchaContainer.style.display = 'flex';
+            
+            const captchaWrapper = document.createElement('div');
+            captchaWrapper.className = 'captcha-wrapper';
+            
+            // 创建新的 hCaptcha 元素
+            const hcaptchaDiv = document.createElement('div');
+            hcaptchaDiv.className = 'h-captcha';
+            hcaptchaDiv.setAttribute('data-sitekey', '8f124646-ac04-496c-85b6-6396e8b8da3c');
+            
+            captchaWrapper.appendChild(hcaptchaDiv);
+            captchaContainer.appendChild(captchaWrapper);
+            document.body.appendChild(captchaContainer);
+
+            // 重新渲染 hCaptcha
+            if (window.hcaptcha) {
+                const widgetId = window.hcaptcha.render(hcaptchaDiv, {
+                    callback: async (token) => {
+                        const { data, error } = await client.auth.signInWithOAuth({
+                            provider: 'google',
+                            options: {
+                                redirectTo: `https://www.moely.link/user/`,
+                            },
+                        })
+
+                        // 移除验证码容器
+                        document.body.removeChild(captchaContainer);
+
+                        if (error) {
+                            showMessage(error.message, 'error');
+                        } else {
+                            showMessage('前往Google授权！', 'success');
+                        }
+                    },
+                    'close-callback': () => {
+                        document.body.removeChild(captchaContainer);
+                    },
+                    'error-callback': () => {
+                        showMessage('验证失败，请重试', 'error');
+                        document.body.removeChild(captchaContainer);
+                    }
+                });
             }
         });
     }

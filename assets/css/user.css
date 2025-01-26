@@ -11,10 +11,6 @@ html {
     margin-left: 20px;
 }
 
-.container .portfolio {
-    margin-top: 0!important;
-}
-
 .login {
     position: fixed;
     top: 0;
