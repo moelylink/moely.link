@@ -2,8 +2,12 @@ const supabaseUrl = 'https://fefckqwvcvuadiixvhns.supabase.co';
 const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZlZmNrcXd2Y3Z1YWRpaXh2aG5zIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzYzNDE5OTUsImV4cCI6MjA1MTkxNzk5NX0.-OUllwH7v2K-j4uIx7QQaV654R5Gz5_1jP4BGdkWWfg';
 const client = supabase.createClient(supabaseUrl, supabaseKey);
 
+let masonryInstance = null;
+let currentPage = 1;
+let isLoading = false;
 let notificationCount = 0;
 const notifications = new Set();
+
 const style = document.createElement('style');
 style.textContent = `
     .notification { position: fixed; bottom: 16px; right: 16px; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.15); transition: transform 0.3s cubic-bezier(0.645, 0.045, 0.355, 1); z-index: 1000; width: 300px; height: 48px; backdrop-filter: blur(10px); transform: translateX(calc(100% + 32px)); overflow: hidden; }
@@ -42,6 +46,7 @@ function showMessage(message, type = 'info') {
 
     document.body.appendChild(notification);
     notifications.add(notification);
+    
     updateNotificationsPosition();
     
     setTimeout(() => {
@@ -68,167 +73,181 @@ function updateNotificationsPosition() {
     }
 }
 
-document.addEventListener('DOMContentLoaded', async () => {
-    try {
-        const { data: { session }, error } = await client.auth.getSession();
-        
-        if (error || !session) {
-            window.location.href = '/user/login';
-            return;
-        }
-
-        const user = session.user;
-        const page = getPageFromUrl();
-        await loadFavorites(user.id, page);
-    } catch (error) {
-        console.error('Error loading session:', error);
+function initMasonry() {
+    if (masonryInstance) {
+        masonryInstance.destroy();
     }
-});
+    
+    masonryInstance = new Masonry('.portfolio', {
+        itemSelector: '.portfolio-item',
+        columnWidth: '.portfolio-item',
+        percentPosition: true,
+        gutter: 0,
+        transitionDuration: 0
+      });
+}
 
-/**
- * 从 Supabase 加载用户的书签并显示
- * @param {string} userId - 用户ID
- */
 async function loadFavorites(userId, page = 1) {
-    const itemsPerPage = 20;
-    const from = (page - 1) * itemsPerPage;
-    const to = from + itemsPerPage - 1;
-    const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
-
+    if (isLoading) return;
+    isLoading = true;
+    
     try {
+        const itemsPerPage = 20;
         const { data: bookmarks, error } = await client
             .from('bookmarks')
             .select('id, url, image, created_at')
             .eq('user_id', userId)
-            .range(from, to);
+            .range((page - 1) * itemsPerPage, page * itemsPerPage - 1);
 
-        if (error) {
-            console.error('Error fetching bookmarks:', error);
-            return;
-        }
+        if (error) throw error;
 
-        const portfolioContainer = document.querySelector('.portfolio');
-        if (portfolioContainer) {
-            let htmlContent = '';
-
-            bookmarks.forEach(item => {
-                if (isMobile) {
-                    // 移动端版本 - 长按触发
-                    htmlContent += `
-                        <div class="portfolio-item" data-bookmark-id="${item.id}">
-                            <div class="thumb">
-                                <a href="${item.url}">
-                                    <img class="img-item lazyload" data-src="${item.image}" src="/assets/img/loading.gif" alt="Image">
-                                </a>
-                                <div class="widget-tags" style="background-color: rgba(0,0,0,0.3);">
-                                    <span>收藏时间: ${new Date(item.created_at).toLocaleDateString()}</span>
-                                </div>
-                            </div>
-                        </div>
-                    `;
-                } else {
-                    // PC版本 - 悬停显示删除按钮
-                    htmlContent += `
-                        <div class="portfolio-item">
-                            <div class="thumb">
-                                <a href="${item.url}">
-                                    <img class="img-item lazyload" data-src="${item.image}" src="/assets/img/loading.gif" alt="Image">
-                                </a>
-                                <div class="widget-tags" style="background-color: rgba(0,0,0,0.3);">
-                                    <span>收藏时间: ${new Date(item.created_at).toLocaleDateString()}</span>
-                                    <button class="delete-btn" onclick="deleteBookmark('${item.id}')">删除</button>
-                                </div>
-                            </div>
-                        </div>
-                    `;
-                }
-            });
-
-            portfolioContainer.innerHTML = htmlContent;
-
-            // 如果是移动设备，添加长按事件监听
-            if (isMobile) {
-                const portfolioItems = document.querySelectorAll('.portfolio-item');
-                portfolioItems.forEach(item => {
-                    let pressTimer;
-                    const bookmarkId = item.dataset.bookmarkId;
-
-                    item.addEventListener('touchstart', () => {
-                        item.style.opacity = '0.7';
-                        pressTimer = setTimeout(() => {
-                            if (confirm('确定要删除这张图片吗？')) {
-                                deleteBookmark(bookmarkId);
-                            } else {
-                                item.style.opacity = '1';
-                            }
-                        }, 800);
-                    });
-
-                    item.addEventListener('touchend', () => {
-                        clearTimeout(pressTimer);
-                        item.style.opacity = '1';
-                    });
-
-                    item.addEventListener('touchmove', () => {
-                        clearTimeout(pressTimer);
-                        item.style.opacity = '1';
-                    });
-                });
-            }
-        }
+        renderBookmarks(bookmarks, page);
+        currentPage = page;
+        
     } catch (error) {
-        console.error('Error loading favorites:', error);
+        console.error('Error:', error);
+        showMessage('加载失败，请稍后重试', 'error');
+    } finally {
+        isLoading = false;
     }
 }
 
-/**
- * 删除书签
- * @param {string} bookmarkId - 书签ID
- */
+function renderBookmarks(bookmarks, page) {
+    const portfolioContainer = document.querySelector('.portfolio');
+    if (!portfolioContainer) return;
+
+    const isMobile = /Mobi|Android/i.test(navigator.userAgent);
+    let htmlContent = '';
+
+    if (page === 1) {
+        portfolioContainer.innerHTML = '';
+    }
+
+    bookmarks.forEach(item => {
+        htmlContent += `
+            <div class="portfolio-item" data-id="${item.id}">
+                <div class="thumb">
+                    <a href="${item.url}" target="_blank">
+                        <img class="lazyload" 
+                             data-src="${item.image}" 
+                             src="/assets/img/loading.gif" 
+                             alt="Bookmarked content">
+                    </a>
+                    <div class="widget-tags">
+                        <span>${new Date(item.created_at).toLocaleDateString()}</span>
+                        ${!isMobile ? `<button class="delete-btn" onclick="deleteBookmark('${item.id}')">🗑️</button>` : ''}
+                    </div>
+                </div>
+            </div>
+        `;
+    });
+
+    const tempDiv = document.createElement('div');
+    tempDiv.innerHTML = htmlContent;
+    const newElements = Array.from(tempDiv.children);
+
+    portfolioContainer.append(...newElements);
+    
+    if (!masonryInstance) {
+        initMasonry();
+    } else {
+        masonryInstance.appended(newElements);
+    }
+
+    imagesLoaded(portfolioContainer).on('progress', () => {
+        masonryInstance.layout();
+    });
+
+    if (isMobile) {
+        setupMobileEvents();
+    }
+}
+
 async function deleteBookmark(bookmarkId) {
+    if (!confirm('确定要删除这个收藏吗？')) return;
+
     try {
         const { error } = await client
             .from('bookmarks')
             .delete()
             .eq('id', bookmarkId);
 
-        if (error) {
-            console.error('Error deleting bookmark:', error);
-            showMessage('删除失败，请重试', 'error');
-        } else {
-            showMessage('删除成功', 'success');
-            const page = getPageFromUrl();
-            const user = await client.auth.getUser();
-            await loadFavorites(user.data.user.id, page);
+        if (error) throw error;
+
+        const item = document.querySelector(`[data-id="${bookmarkId}"]`);
+        if (item) {
+            masonryInstance.remove(item);
+            masonryInstance.layout();
         }
+        showMessage('删除成功', 'success');
+        
     } catch (error) {
-        console.error('Error deleting bookmark:', error);
+        console.error('Delete error:', error);
+        showMessage('删除失败，请重试', 'error');
     }
 }
 
-function getPageFromUrl() {
-    const urlParams = new URLSearchParams(window.location.search);
-    const page = parseInt(urlParams.get('page'), 10);
-    return isNaN(page) || page < 1 ? 1 : page;
+function setupMobileEvents() {
+    let pressTimer;
+    
+    document.querySelectorAll('.portfolio-item').forEach(item => {
+        item.addEventListener('touchstart', (e) => {
+            pressTimer = setTimeout(() => {
+                e.preventDefault();
+                const bookmarkId = item.dataset.id;
+                deleteBookmark(bookmarkId);
+            }, 800);
+        });
+
+        item.addEventListener('touchend', () => {
+            clearTimeout(pressTimer);
+        });
+
+        item.addEventListener('touchmove', () => {
+            clearTimeout(pressTimer);
+        });
+    });
 }
 
-document.addEventListener('DOMContentLoaded', () => {
-    if (!/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
-        const portfolioItems = document.querySelectorAll('.portfolio-item');
-
-        portfolioItems.forEach(item => {
-            const thumb = item.querySelector('.thumb');
-            const widgetTags = item.querySelector('.widget-tags');
-
-            thumb.addEventListener('mouseenter', () => {
-                widgetTags.style.display = 'block';
-                widgetTags.style.opacity = '1';
-            });
-
-            thumb.addEventListener('mouseleave', () => {
-                widgetTags.style.display = 'none';
-                widgetTags.style.opacity = '0';
-            });
+function handlePagination() {
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting && !isLoading) {
+                loadFavorites(currentUserId, currentPage + 1);
+            }
         });
+    });
+
+    const sentinel = document.createElement('div');
+    sentinel.style.height = '100px';
+    document.querySelector('.container').appendChild(sentinel);
+    observer.observe(sentinel);
+}
+
+document.addEventListener('DOMContentLoaded', async () => {
+    try {
+        const { data: { session } } = await client.auth.getSession();
+        if (!session) window.location.href = '/login';
+
+        const userId = session.user.id;
+        window.currentUserId = userId;
+        
+        await loadFavorites(userId);
+        handlePagination();
+        
+        let resizeTimer;
+        window.addEventListener('resize', () => {
+            clearTimeout(resizeTimer);
+            resizeTimer = setTimeout(() => {
+                if (masonryInstance) {
+                    masonryInstance.options.transitionDuration = '0.4s';
+                    masonryInstance.layout();
+                }
+            }, 200);
+        });
+
+    } catch (error) {
+        console.error('Init error:', error);
+        window.location.href = '/login';
     }
 });
