@@ -227,7 +227,7 @@ function handlePagination() {
 document.addEventListener('DOMContentLoaded', async () => {
     try {
         const { data: { session } } = await client.auth.getSession();
-        if (!session) window.location.href = '/login';
+        if (!session) window.location.href = '/user/login';
 
         const userId = session.user.id;
         window.currentUserId = userId;
