@@ -4,7 +4,9 @@ exports.handler = async (event, context) => {
     const supabaseKey = process.env.SUPABASE_KEY;
     return {
       statusCode: 200,
-      body: JSON.stringify({ supabaseUrl: supabaseUrl, supabaseKey: supabaseKey, data: "已与服务端建立连接" }),
+      supabaseUrl,
+      supabaseKey,
+      body: JSON.stringify({ data: "已与服务端建立连接" }),
     };
   } catch (error) {
     // 捕获所有错误并返回 500
