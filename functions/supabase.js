@@ -2,11 +2,9 @@ exports.handler = async (event, context) => {
   try {
     const supabaseUrl = process.env.SUPABASE_URL;
     const supabaseKey = process.env.SUPABASE_KEY;
-    const client = supabase.createClient(supabaseUrl, supabaseKey);
-    const result = await someAsyncOperation();
     return {
       statusCode: 200,
-      body: JSON.stringify({ data: result }),
+      body: JSON.stringify({ data: "已与服务端建立连接" }),
     };
   } catch (error) {
     // 捕获所有错误并返回 500
