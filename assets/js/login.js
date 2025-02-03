@@ -1,7 +1,9 @@
 document.addEventListener('DOMContentLoaded', async () => {
-    const supabaseUrl = process.env.SUPABASE_URL;
-    const supabaseKey = process.env.SUPABASE_KEY;
-    const client = supabase.createClient(supabaseUrl, supabaseKey);
+    fetch('/.netlify/functions/supabase', {
+        method: 'POST',
+    })
+    .then(response => response.json())
+    .then(data => console.log(data));
 
     const { data: { session }, error } = await client.auth.getSession();
     if (session) {
