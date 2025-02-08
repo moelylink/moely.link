@@ -225,7 +225,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                                 window.hcaptcha.reset();
                             }
                         } else {
-                            showMessage('注册成功，请前往邮箱激活您的账号。记得检查垃圾收件箱！', 'success');
+                            showMessage('请前往邮箱激活账号，记得检查垃圾收件箱！', 'success');
                             setTimeout(() => {
                                 window.location.href = '/user/login/';
                             }, 3000);
