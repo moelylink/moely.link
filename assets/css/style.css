@@ -2240,7 +2240,7 @@ body {
 }
 
 .body_has-navbar-left .container {
-    max-width: 1000px;
+    max-width: 1500px;
 }
 
 @media (min-width: 800px) {
@@ -2447,7 +2447,7 @@ body {
 
 /*============================================== Portfolio ===============================================*/
 .portfolio {
-    margin: 50px 0 10px 0;
+    margin: 10px 0;
 }
 
 .portfolio .portfolio-item {
@@ -5447,7 +5447,7 @@ address p {
     }
 }
 
-@media screen and (max-width: 1600px) {
+@media screen and (max-width: 1200px) {
 
     /*portfolio grid*/
     .portfolio.col-2 .portfolio-item,
@@ -5500,7 +5500,7 @@ address p {
     }
 }
 
-@media screen and (max-width: 1000px) {
+@media screen and (max-width: 900px) {
 
     /*portfolio grid*/
     .portfolio.col-2 .portfolio-item,
@@ -5827,7 +5827,7 @@ address p {
     }
 }
 
-@media screen and (max-width: 767px) {
+@media screen and (max-width: 800px) {
     .page-title .breadcrumb {
         right: auto;
         left: 15px;
@@ -6438,4 +6438,8 @@ address p {
     .detail-classic {
       width: 100%;
     }
+}
+
+:target {
+    scroll-margin-top: 70px;
 }
