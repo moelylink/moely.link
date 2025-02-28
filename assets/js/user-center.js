@@ -6,7 +6,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     const { data: { session }, error } = await client.auth.getSession();
     
     if (error || !session) {
-        window.location.href = '/user/login';
+        window.location.href = '/user/login/';
         return;
     }
 

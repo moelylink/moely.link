@@ -248,6 +248,6 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     } catch (error) {
         console.error('Init error:', error);
-        window.location.href = '/login';
+        window.location.href = '/user/login/';
     }
 });
