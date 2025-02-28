@@ -2,6 +2,8 @@
 
 萌哩 - 萌萌的二次元美图。全网精选二次元美图，提供高质量原图下载。收藏美图，收获美好。
 
+[网站地址](https://www.moely.link/) | [TG频道](https://t.me/gongzhutonghao) | [赞助我们](https://afdian.com/a/awaowo)
+
 ## 网站特性
 
 - 响应式瀑布流设计
@@ -12,14 +14,17 @@
 - 支持最高4K分辨率的原图下载
 - PWA（渐进式网络应用程序）支持
 - 随机传送功能，每次一点小惊喜～
-- 用户中心、收藏列表[Beta]
+- 用户登录/注册功能，支持第三方账号登录
+- 支持将图片添加收藏，收藏列表云端同步
 
 ## 技术栈
 
 - HTML
 - CSS
 - JavaScript
+- Hugo
 - Python
+- Supabase
 
 ## 开源信息
 
@@ -27,4 +32,4 @@
 
 ## 更多信息
 
-请参见 [关于页面](https://www.moely.link/about)
+请参见 [关于页面](https://www.moely.link/about/)
