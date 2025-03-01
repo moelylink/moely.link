@@ -5,3 +5,4 @@
     package = "@algolia/netlify-plugin-crawler"
     [plugins.inputs]
         customDomain = "www.moely.link"
+        excludes = ["**/page/**","**/category/**","**/user/**","/"]
