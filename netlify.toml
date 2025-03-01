@@ -2,6 +2,7 @@
     functions = "functions"
 
 [[plugins]]
-    package = "algoliasearch-netlify"
+    package = "@algolia/netlify-plugin-crawler"
     [plugins.inputs]
         exclude = ["**/page/**","**/category/**","**/user/**","/"]
+        customDomain = "www.moely.link"
