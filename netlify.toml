@@ -2,6 +2,6 @@
     functions = "functions"
 
 [[plugins]]
-    package = "netlify-plugin-algolia"
+    package = "algoliasearch-netlify"
     [plugins.inputs]
-        exclude = ["**/page/**","**/category/**","/"]
+        exclude = ["**/page/**","**/category/**","**/user/**","/"]

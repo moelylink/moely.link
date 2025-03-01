@@ -865,7 +865,7 @@ body{
 
 .menuzord-menu>li>.megamenu.megamenu-quarter-width {
     left: auto;
-    width: 25%;
+    width: 35%;
 }
 
 .menuzord-menu>li>.megamenu .megamenu-row {
@@ -6442,4 +6442,12 @@ address p {
 
 :target {
     scroll-margin-top: 70px;
+}
+
+.aa-Panel {
+    z-index: 9999 !important;
+}
+
+.aa-DetachedOverlay {
+    z-index: 9999 !important;
 }
