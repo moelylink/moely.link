@@ -1,2 +1,7 @@
 [build]
     functions = "functions"
+
+[[plugins]]
+    package = "netlify-plugin-algolia"
+    [plugins.inputs]
+        exclude = ["**/page/**","**/category/**","/"]
