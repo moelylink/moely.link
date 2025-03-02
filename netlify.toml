@@ -1,2 +1,9 @@
 [build]
     functions = "functions"
+
+
+[[plugins]]
+package = "@algolia/netlify-plugin-crawler"
+    [plugins.inputs]
+    branches = ['main']
+    customDomain = "www.moely.link"
