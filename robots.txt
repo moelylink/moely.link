@@ -5,8 +5,8 @@ Disallow: /tags/*/page/
 Disallow: /user/
 Disallow: /about/
 Disallow: /tos/
+Disallow: /links/
 Disallow: /go/
-
 
 User-agent: *
 Allow: /
