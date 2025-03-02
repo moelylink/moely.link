@@ -1,7 +1,7 @@
 User-agent: Algolia Crawler
-Disallow: /
 Allow: /img/
 Allow: /sitemap.xml
+Disallow: /
 
 User-agent: *
 Allow: /
