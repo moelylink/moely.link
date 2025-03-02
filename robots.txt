@@ -1,9 +1,15 @@
 User-agent: Algolia Crawler
-Allow: /img/
-Allow: /sitemap.xml
-Disallow: /
+Disallow: /category/
+Disallow: /page/
+Disallow: /tags/*/page/
+Disallow: /user/
+Disallow: /about/
+Disallow: /tos/
+Disallow: /go/
+
 
 User-agent: *
 Allow: /
+Disallow: /go/
 
 Sitemap: https://www.moely.link/sitemap.xml
