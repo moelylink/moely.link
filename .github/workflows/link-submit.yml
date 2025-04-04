@@ -1,0 +1,37 @@
+name: Link Submit
+
+on:
+  schedule:
+    - cron: '0 0 * * *'  # 每天UTC时间0点运行（北京时间8点）
+  workflow_dispatch:     # 允许手动触发
+
+jobs:
+  submit-urls:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Submit URLs to Baidu
+      env:
+        SITE_URL: ${{ secrets.SITE_URL }}  # 站点域名（如：example.com）
+        BAIDU_TOKEN: ${{ secrets.BAIDU_TOKEN }}  # 百度API token
+      run: |
+        API_URL="http://data.zz.baidu.com/urls?site=${SITE_URL}&token=${BAIDU_TOKEN}"
+        RESPONSE=$(curl -s -H 'Content-Type:text/plain' --data-binary @urls.txt $API_URL)
+        
+        # 检查curl命令是否成功执行
+        if [ $? -ne 0 ]; then
+          echo "❌ API请求失败"
+          exit 1
+        fi
+
+        # 解析百度API响应
+        echo "百度API响应：$RESPONSE"
+        if [[ $RESPONSE == *"error"* ]]; then
+          echo "❌ 提交失败：$RESPONSE"
+          exit 1
+        else
+          echo "✅ 提交成功：$RESPONSE"
+        fi

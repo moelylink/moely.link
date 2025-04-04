@@ -6,11 +6,11 @@ Disallow: /user/
 Disallow: /about/
 Disallow: /tos/
 Disallow: /links/
-Disallow: /go/
 Disallow: /update/
 
 User-agent: *
 Allow: /
 Disallow: /go/
+Disallow: /url.txt
 
 Sitemap: https://www.moely.link/sitemap.xml
