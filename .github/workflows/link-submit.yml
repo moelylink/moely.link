@@ -2,8 +2,8 @@ name: Link Submit
 
 on:
   schedule:
-    - cron: '0 0 * * *'  # 每天UTC时间0点运行（北京时间8点）
-  workflow_dispatch:
+    - cron: '0 0 1-31/3 * *'  # 每3天UTC时间0点运行（北京时间8点）
+  workflow_dispatch:  # 允许手动触发
 
 jobs:
   submit-urls:
@@ -19,7 +19,7 @@ jobs:
         BAIDU_TOKEN: ${{ secrets.BAIDU_TOKEN }}  # 百度API token
       run: |
         API_URL="http://data.zz.baidu.com/urls?site=${SITE_URL}&token=${BAIDU_TOKEN}"
-        RESPONSE1=$(curl -s -H 'Content-Type:text/plain' --data-binary @urls1.txt $API_URL)
+        RESPONSE=$(curl -s -H 'Content-Type:text/plain' --data-binary @urls.txt $API_URL)
         
         # 检查curl命令是否成功执行
         if [ $? -ne 0 ]; then
@@ -28,17 +28,9 @@ jobs:
         fi
 
         # 解析百度API响应
-        echo "百度API响应：$RESPONSE1"
-        if [[ $RESPONSE1 == *"error"* ]]; then
-          echo "❌第一部分提交失败：$RESPONSE1"
+        if [[ $RESPONSE == *"error"* ]]; then
+          echo "❌提交失败：$RESPONSE"
+          exit 1
         else
-          echo "✅第一部分提交成功：$RESPONSE1"
-        fi
-        
-        RESPONSE2=$(curl -s -H 'Content-Type:text/plain' --data-binary @urls2.txt $API_URL)
-        echo "百度API响应：$RESPONSE2"
-        if [[ $RESPONSE2 == *"error"* ]]; then
-          echo "❌第二部分提交失败：$RESPONSE2"
-        else
-          echo "✅第二部分提交成功：$RESPONSE2"
+          echo "✅提交成功：$RESPONSE"
         fi
