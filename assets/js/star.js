@@ -141,7 +141,7 @@ function renderBookmarks(bookmarks, page) {
                     <div class="widget-tags">
                         <span>${new Date(item.created_at).toLocaleDateString()}</span>
                     </div>
-                    <button class="delete-btn" onclick="deleteBookmark('${item.id}')">
+                    <button class="delete-btn" onclick="showConfirmDialog('${item.id}')">
                         <span class="mdi mdi-delete"></span>
                     </button>
                 </div>
@@ -171,8 +171,6 @@ function renderBookmarks(bookmarks, page) {
 }
 
 async function deleteBookmark(bookmarkId) {
-    if (!confirm('确定要删除这个收藏吗？')) return;
-
     try {
         const { error } = await client
             .from('bookmarks')
@@ -273,3 +271,126 @@ deleteBtnStyle.textContent = `
     }
 `;
 document.head.appendChild(deleteBtnStyle);
+
+// 添加确认弹窗样式
+const confirmDialogStyle = document.createElement('style');
+confirmDialogStyle.textContent = `
+    .confirm-dialog {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.5);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 2147483647;
+        opacity: 0;
+        visibility: hidden;
+        transition: all 0.3s ease;
+    }
+    .confirm-dialog.show {
+        opacity: 1;
+        visibility: visible;
+    }
+    .confirm-content {
+        background: white;
+        padding: 24px;
+        border-radius: 8px;
+        width: 90%;
+        max-width: 400px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        margin: 0;
+    }
+    .confirm-title {
+        font-size: 18px;
+        margin-bottom: 20px;
+        color: #333;
+        text-align: center;
+    }
+    .confirm-buttons {
+        display: flex;
+        justify-content: center;
+        gap: 12px;
+    }
+    .confirm-btn {
+        padding: 8px 24px;
+        border-radius: 4px;
+        border: none;
+        cursor: pointer;
+        font-size: 14px;
+        transition: all 0.3s ease;
+        min-width: 80px;
+    }
+    .confirm-cancel {
+        background: #f5f5f5;
+        color: #666;
+    }
+    .confirm-cancel:hover {
+        background: #e8e8e8;
+    }
+    .confirm-delete {
+        background: #ff4d4f;
+        color: white;
+    }
+    .confirm-delete:hover {
+        background: #ff7875;
+    }
+    @media (max-width: 480px) {
+        .confirm-content {
+            width: 85%;
+            padding: 20px;
+        }
+        .confirm-title {
+            font-size: 16px;
+            margin-bottom: 16px;
+        }
+        .confirm-btn {
+            padding: 8px 16px;
+            min-width: 70px;
+        }
+    }
+`;
+document.head.appendChild(confirmDialogStyle);
+
+// 创建确认弹窗
+const confirmDialog = document.createElement('div');
+confirmDialog.className = 'confirm-dialog';
+confirmDialog.innerHTML = `
+    <div class="confirm-content">
+        <div class="confirm-title">确定要删除这个收藏吗？</div>
+        <div class="confirm-buttons">
+            <button class="confirm-btn confirm-cancel">取消</button>
+            <button class="confirm-btn confirm-delete">删除</button>
+        </div>
+    </div>
+`;
+document.body.appendChild(confirmDialog);
+
+let currentBookmarkId = null;
+
+// 显示确认弹窗
+function showConfirmDialog(bookmarkId) {
+    currentBookmarkId = bookmarkId;
+    confirmDialog.classList.add('show');
+}
+
+// 隐藏确认弹窗
+function hideConfirmDialog() {
+    confirmDialog.classList.remove('show');
+    currentBookmarkId = null;
+}
+
+// 绑定确认弹窗事件
+confirmDialog.querySelector('.confirm-cancel').addEventListener('click', hideConfirmDialog);
+confirmDialog.querySelector('.confirm-delete').addEventListener('click', () => {
+    if (currentBookmarkId) {
+        deleteBookmark(currentBookmarkId);
+        hideConfirmDialog();
+    }
+});
