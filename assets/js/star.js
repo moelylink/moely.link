@@ -2,6 +2,11 @@ const supabaseUrl = 'https://fefckqwvcvuadiixvhns.supabase.co';
 const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZlZmNrcXd2Y3Z1YWRpaXh2aG5zIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzYzNDE5OTUsImV4cCI6MjA1MTkxNzk5NX0.-OUllwH7v2K-j4uIx7QQaV654R5Gz5_1jP4BGdkWWfg';
 const client = supabase.createClient(supabaseUrl, supabaseKey);
 
+const materialIconsLink = document.createElement('link');
+materialIconsLink.rel = 'stylesheet';
+materialIconsLink.href = 'https://cdn.jsdelivr.net/npm/@mdi/font@7.2.96/css/materialdesignicons.min.css';
+document.head.appendChild(materialIconsLink);
+
 let masonryInstance = null;
 let currentPage = 1;
 let isLoading = false;
@@ -135,8 +140,10 @@ function renderBookmarks(bookmarks, page) {
                     </a>
                     <div class="widget-tags">
                         <span>${new Date(item.created_at).toLocaleDateString()}</span>
-                        ${!isMobile ? `<button class="delete-btn" onclick="deleteBookmark('${item.id}')">🗑️</button>` : ''}
                     </div>
+                    <button class="delete-btn" onclick="deleteBookmark('${item.id}')">
+                        <span class="mdi mdi-delete"></span>
+                    </button>
                 </div>
             </div>
         `;
@@ -188,25 +195,7 @@ async function deleteBookmark(bookmarkId) {
 }
 
 function setupMobileEvents() {
-    let pressTimer;
-    
-    document.querySelectorAll('.portfolio-item').forEach(item => {
-        item.addEventListener('touchstart', (e) => {
-            pressTimer = setTimeout(() => {
-                e.preventDefault();
-                const bookmarkId = item.dataset.id;
-                deleteBookmark(bookmarkId);
-            }, 800);
-        });
-
-        item.addEventListener('touchend', () => {
-            clearTimeout(pressTimer);
-        });
-
-        item.addEventListener('touchmove', () => {
-            clearTimeout(pressTimer);
-        });
-    });
+    // 不再需要移动端特殊处理
 }
 
 function handlePagination() {
@@ -251,3 +240,36 @@ document.addEventListener('DOMContentLoaded', async () => {
         window.location.href = '/user/login/';
     }
 });
+
+// 添加删除按钮样式
+const deleteBtnStyle = document.createElement('style');
+deleteBtnStyle.textContent = `
+    .delete-btn {
+        position: absolute;
+        top: 8px;
+        right: 8px;
+        width: 32px;
+        height: 32px;
+        border-radius: 4px;
+        background: rgba(255, 255, 255, 0.9);
+        border: none;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.3s ease;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        color: #666;
+    }
+    .delete-btn:hover {
+        background: #ff4d4f;
+        color: white;
+    }
+    .delete-btn .mdi {
+        font-size: 20px;
+    }
+    .portfolio-item {
+        position: relative;
+    }
+`;
+document.head.appendChild(deleteBtnStyle);
