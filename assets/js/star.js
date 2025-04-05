@@ -14,21 +14,7 @@ let notificationCount = 0;
 const notifications = new Set();
 
 const style = document.createElement('style');
-style.textContent = `
-    .notification { position: fixed; bottom: 16px; right: 16px; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.15); transition: transform 0.3s cubic-bezier(0.645, 0.045, 0.355, 1); z-index: 1000; width: 300px; height: 48px; backdrop-filter: blur(10px); transform: translateX(calc(100% + 32px)); overflow: hidden; }
-    .notification.show { transform: translateX(0); }
-    .notification-wrapper { width: 100%; height: 100%; display: flex; align-items: center; }
-    .notification-content { flex: 1; padding: 0 16px; z-index: 2; background: white; height: 100%; display: flex; align-items: center; }
-    .notification-content p { margin: 0; padding: 0; font-size: 14px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-    .notification-icon { width: 48px; display: flex; align-items: center; justify-content: center; z-index: 1; height: 100%; }
-    .notification-icon .material-icons-round { font-size: 20px; color: white; }
-    .notification.error .notification-icon { background: #ff4d4f; }
-    .notification.error .notification-content p { color: #cf1322; }
-    .notification.success .notification-icon { background: #52c41a; }
-    .notification.success .notification-content p { color: #389e0d; }
-    .notification.warning .notification-icon { background: #faad14; }
-    .notification.warning .notification-content p { color: #d48806; }
-`;
+style.textContent = `.notification{position:fixed;bottom:16px;right:16px;border-radius:8px;box-shadow:0 4px 12px rgba(0,0,0,.15);transition:transform .3s cubic-bezier(.645,.045,.355,1);z-index:1000;width:300px;height:48px;backdrop-filter:blur(10px);transform:translateX(calc(100% + 32px));overflow:hidden}.notification.show{transform:translateX(0)}.notification-wrapper{width:100%;height:100%;display:flex;align-items:center}.notification-content{flex:1;padding:0 16px;z-index:2;background:#fff;height:100%;display:flex;align-items:center}.notification-content p{margin:0;padding:0;font-size:14px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.notification-icon{width:48px;display:flex;align-items:center;justify-content:center;z-index:1;height:100%}.notification-icon .material-icons-round{font-size:20px;color:#fff}.notification.error .notification-icon{background:#ff4d4f}.notification.error .notification-content p{color:#cf1322}.notification.success .notification-icon{background:#52c41a}.notification.success .notification-content p{color:#389e0d}.notification.warning .notification-icon{background:#faad14}.notification.warning .notification-content p{color:#d48806}`;
 document.head.appendChild(style);
 
 function showMessage(message, type = 'info') {
@@ -241,121 +227,12 @@ document.addEventListener('DOMContentLoaded', async () => {
 
 // 添加删除按钮样式
 const deleteBtnStyle = document.createElement('style');
-deleteBtnStyle.textContent = `
-    .delete-btn {
-        position: absolute;
-        top: 8px;
-        right: 8px;
-        width: 32px;
-        height: 32px;
-        border-radius: 4px;
-        background: rgba(255, 255, 255, 0.9);
-        border: none;
-        cursor: pointer;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        transition: all 0.3s ease;
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-        color: #666;
-    }
-    .delete-btn:hover {
-        background: #ff4d4f;
-        color: white;
-    }
-    .delete-btn .mdi {
-        font-size: 20px;
-    }
-    .portfolio-item {
-        position: relative;
-    }
-`;
+deleteBtnStyle.textContent = `.delete-btn{position:absolute;top:8px;right:8px;width:32px;height:32px;border-radius:4px;background:rgba(255,255,255,.9);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .3s ease;box-shadow:0 2px 4px rgba(0,0,0,.1);color:#666}.delete-btn:hover{background:#ff4d4f;color:#fff}.delete-btn .mdi{font-size:20px}.portfolio-item{position:relative}`;
 document.head.appendChild(deleteBtnStyle);
 
 // 添加确认弹窗样式
 const confirmDialogStyle = document.createElement('style');
-confirmDialogStyle.textContent = `
-    .confirm-dialog {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: rgba(0, 0, 0, 0.5);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        z-index: 2147483647;
-        opacity: 0;
-        visibility: hidden;
-        transition: all 0.3s ease;
-    }
-    .confirm-dialog.show {
-        opacity: 1;
-        visibility: visible;
-    }
-    .confirm-content {
-        background: white;
-        padding: 24px;
-        border-radius: 8px;
-        width: 90%;
-        max-width: 400px;
-        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        margin: 0;
-    }
-    .confirm-title {
-        font-size: 18px;
-        margin-bottom: 20px;
-        color: #333;
-        text-align: center;
-    }
-    .confirm-buttons {
-        display: flex;
-        justify-content: center;
-        gap: 12px;
-    }
-    .confirm-btn {
-        padding: 8px 24px;
-        border-radius: 4px;
-        border: none;
-        cursor: pointer;
-        font-size: 14px;
-        transition: all 0.3s ease;
-        min-width: 80px;
-    }
-    .confirm-cancel {
-        background: #f5f5f5;
-        color: #666;
-    }
-    .confirm-cancel:hover {
-        background: #e8e8e8;
-    }
-    .confirm-delete {
-        background: #ff4d4f;
-        color: white;
-    }
-    .confirm-delete:hover {
-        background: #ff7875;
-    }
-    @media (max-width: 480px) {
-        .confirm-content {
-            width: 85%;
-            padding: 20px;
-        }
-        .confirm-title {
-            font-size: 16px;
-            margin-bottom: 16px;
-        }
-        .confirm-btn {
-            padding: 8px 16px;
-            min-width: 70px;
-        }
-    }
-`;
+confirmDialogStyle.textContent = `.confirm-dialog{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.5);display:flex;align-items:center;justify-content:center;z-index:2147483647;opacity:0;visibility:hidden;transition:all .3s ease}.confirm-dialog.show{opacity:1;visibility:visible}.confirm-content{background:#fff;padding:24px;border-radius:8px;width:90%;max-width:400px;box-shadow:0 2px 10px rgba(0,0,0,.1);position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);margin:0}.confirm-icon{text-align:center;margin-bottom:16px;color:#ff4d4f}.confirm-icon .mdi{font-size:48px}.confirm-title{font-size:18px;margin-bottom:20px;color:#333;text-align:center}.confirm-buttons{display:flex;justify-content:center;gap:12px}.confirm-btn{padding:8px 24px;border-radius:4px;border:none;cursor:pointer;font-size:14px;transition:all .3s ease;min-width:80px}.confirm-cancel{background:#f5f5f5;color:#666}.confirm-cancel:hover{background:#e8e8e8}.confirm-delete{background:#ff4d4f;color:#fff}.confirm-delete:hover{background:#ff7875}@media(max-width:480px){.confirm-content{width:85%;padding:20px}.confirm-icon .mdi{font-size:40px}.confirm-title{font-size:16px;margin-bottom:16px}.confirm-btn{padding:8px 16px;min-width:70px}}`;
 document.head.appendChild(confirmDialogStyle);
 
 // 创建确认弹窗
@@ -363,6 +240,9 @@ const confirmDialog = document.createElement('div');
 confirmDialog.className = 'confirm-dialog';
 confirmDialog.innerHTML = `
     <div class="confirm-content">
+        <div class="confirm-icon">
+            <span class="mdi mdi-alert"></span>
+        </div>
         <div class="confirm-title">确定要删除这个收藏吗？</div>
         <div class="confirm-buttons">
             <button class="confirm-btn confirm-cancel">取消</button>

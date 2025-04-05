@@ -22,6 +22,56 @@ style.textContent = `
 `;
 document.head.appendChild(style);
 
+// 添加确认弹窗样式
+const confirmDialogStyle = document.createElement('style');
+confirmDialogStyle.textContent = `.confirm-dialog{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.5);display:flex;align-items:center;justify-content:center;z-index:2147483647;opacity:0;visibility:hidden;transition:all .3s ease}.confirm-dialog.show{opacity:1;visibility:visible}.confirm-content{background:#fff;padding:24px;border-radius:8px;width:90%;max-width:400px;box-shadow:0 2px 10px rgba(0,0,0,.1);position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);margin:0}.confirm-icon{text-align:center;margin-bottom:16px;color:#ff4d4f}.confirm-icon .mdi{font-size:48px}.confirm-title{font-size:18px;margin-bottom:20px;color:#333;text-align:center}.confirm-buttons{display:flex;justify-content:center;gap:12px}.confirm-btn{padding:8px 24px;border-radius:4px;border:none;cursor:pointer;font-size:14px;transition:all .3s ease;min-width:80px}.confirm-cancel{background:#f5f5f5;color:#666}.confirm-cancel:hover{background:#e8e8e8}.confirm-ok{background:#1890ff;color:#fff}.confirm-ok:hover{background:#40a9ff}@media(max-width:480px){.confirm-content{width:85%;padding:20px}.confirm-icon .mdi{font-size:40px}.confirm-title{font-size:16px;margin-bottom:16px}.confirm-btn{padding:8px 16px;min-width:70px}}`;
+document.head.appendChild(confirmDialogStyle);
+
+// 创建确认弹窗
+const confirmDialog = document.createElement('div');
+confirmDialog.className = 'confirm-dialog';
+confirmDialog.innerHTML = `
+    <div class="confirm-content">
+        <div class="confirm-icon">
+            <span class="mdi mdi-alert"></span>
+        </div>
+        <div class="confirm-title"></div>
+        <div class="confirm-buttons">
+            <button class="confirm-btn confirm-cancel">取消</button>
+            <button class="confirm-btn confirm-ok">确定</button>
+        </div>
+    </div>
+`;
+document.body.appendChild(confirmDialog);
+
+// 显示确认弹窗
+function showConfirmDialog(title, callback, icon = "mdi-alert") {
+    confirmDialog.querySelector('.confirm-title').textContent = title;
+    confirmDialog.querySelector('.confirm-icon .mdi').className = `mdi ${icon}`;
+    confirmDialog.classList.add('show');
+    
+    const okBtn = confirmDialog.querySelector('.confirm-ok');
+    const cancelBtn = confirmDialog.querySelector('.confirm-cancel');
+    
+    const handleOk = () => {
+        hideConfirmDialog();
+        if (callback) callback(true);
+    };
+    
+    const handleCancel = () => {
+        hideConfirmDialog();
+        if (callback) callback(false);
+    };
+    
+    okBtn.onclick = handleOk;
+    cancelBtn.onclick = handleCancel;
+}
+
+// 隐藏确认弹窗
+function hideConfirmDialog() {
+    confirmDialog.classList.remove('show');
+}
+
 function showMessage(message, type = 'info') {
     const notification = document.createElement('div');
     notification.className = `notification ${type}`;
@@ -69,22 +119,27 @@ function updateNotificationsPosition() {
 }
 
 async function addStar(id, imgUrl) {
-    
     starText.innerText = "请稍候…";
 
     const userId = await getUserId();
     if (!userId) {
-        if(confirm('请先登录以使用收藏功能!')){ window.open('/user/login'); starText.innerText = "添加收藏"; }
-        else{ showMessage('用户未登录！', 'warning'); starText.innerText = "请先登录"; }
+        showConfirmDialog('请先登录以使用收藏功能!', (confirmed) => {
+            if (confirmed) {
+                window.location.href = '/user/login';
+            }
+            starText.innerText = "请先登录";
+        }, "mdi-login");
         return;
     }
+
     const detailUrl = `/img/${id}/`;
-    const isBookmarked = await Bookmarked(detailUrl,userId);
+    const isBookmarked = await Bookmarked(detailUrl, userId);
     if(isBookmarked) {
         showMessage('您已经收藏过了！', 'warning');
         starText.innerText = "已收藏";
         return;
     }
+
     try {
         const { error } = await client
             .from('bookmarks')
@@ -92,15 +147,21 @@ async function addStar(id, imgUrl) {
 
         if (error) {
             starText.innerText = "收藏失败";
-            showMessage('添加收藏失败', 'error');
+            showConfirmDialog('添加收藏失败，请重试', () => {
+                starText.innerText = "添加收藏";
+            }, "mdi-alert-circle");
         } else {
             starText.innerText = "收藏成功";
             showMessage('已添加到收藏！', 'success');
         }
     } catch (error) {
         console.error('Error adding to favorites:', error);
+        showConfirmDialog('添加收藏失败，请重试', () => {
+            starText.innerText = "添加收藏";
+        }, "mdi-alert-circle");
     }
 }
+
 async function getUserId() {
     const { data: { session }, error } = await client.auth.getSession();
     if (error || !session) {
@@ -108,6 +169,7 @@ async function getUserId() {
     }
     return session.user.id;
 }
+
 async function Bookmarked(url, userId) {
     // 查询用户的所有收藏
     const { data: bookmarks, error } = await client
