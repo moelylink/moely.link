@@ -124,10 +124,8 @@ async function addStar(id, imgUrl) {
     const userId = await getUserId();
     if (!userId) {
         showConfirmDialog('请先登录以使用收藏功能!', (confirmed) => {
-            if (confirmed) {
-                window.location.href = '/user/login';
-            }
-            starText.innerText = "请先登录";
+            if (confirmed) { window.open('/user/login/'); starText.innerText = "添加收藏"; }
+            else { showMessage('用户未登录！', 'warning'); starText.innerText = "请先登录"; }
         }, "mdi-login");
         return;
     }
