@@ -118,11 +118,8 @@ function renderBookmarks(bookmarks, page) {
         htmlContent += `
             <div class="portfolio-item" data-id="${item.id}">
                 <div class="thumb">
-                    <a href="${item.url}" target="_blank">
-                        <img class="lazyload" 
-                             data-src="${item.image}" 
-                             src="/assets/img/loading.gif" 
-                             alt="Bookmarked content">
+                    <a href="${item.url}">
+                        <img class="lazyload" data-src="${item.image}" src="/assets/img/loading.gif" alt="Bookmarked content">
                     </a>
                     <div class="widget-tags">
                         <span>${new Date(item.created_at).toLocaleDateString()}</span>

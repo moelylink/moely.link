@@ -17,7 +17,7 @@ html {
     bottom: 0;
     width: 100%;
     height: 100%;
-    background: url('https://bing.img.run/1920x1080.php') center center / cover no-repeat fixed;
+    background: url('https://bing.ee123.net/img/') center center / cover no-repeat fixed;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -514,7 +514,7 @@ a:hover {
 }
 
 .float-right{
-    position:fixed;
+    position: fixed;
     bottom: 60px;
     right: 20px;
     z-index: 999;
@@ -531,12 +531,36 @@ a:hover {
     background-color: rgba(140, 110, 212, 0.5);
     position: relative;
 }
-.float-btn:hover{
+.float-right .float-btn:hover{
     background-color: #ff9624;
 }
 .float-right.round .float-btn{
     margin-top: 10px;
     border-radius: 10px;
+}
+.float-left{
+    position: fixed;
+    bottom: 80px;
+    left: 20px;
+    z-index: 999;
+    text-align: center;
+    padding: bottom 40px;
+    transition: .3s;
+}
+.float-left .float-btn{
+    width: 40px;
+    line-height: 40px;
+    display: block;
+    font-size: 1em;
+    color: #fffb00;
+    background-color: rgba(250, 75, 50, 0.5);
+    position: relative;
+}
+.float-left .float-btn:hover{
+    background-color: #4bd2ff;
+}
+.float-left.round .float-btn{
+    border-radius: 20px;
 }
 
 .quick-jump{
