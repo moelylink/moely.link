@@ -88,6 +88,7 @@ async function loadFavorites(userId, page = 1) {
             .from('bookmarks')
             .select('id, url, image, created_at')
             .eq('user_id', userId)
+            .order('created_at', { ascending: false })
             .range((page - 1) * itemsPerPage, page * itemsPerPage - 1);
 
         if (error) throw error;
