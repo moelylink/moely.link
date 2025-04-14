@@ -122,7 +122,7 @@ function renderBookmarks(bookmarks, page) {
                     <a href="${item.url}">
                         <img class="lazyload" data-src="${item.image}" src="/assets/img/loading.gif" alt="Bookmarked content">
                     </a>
-                    <div class="widget-tags">
+                    <div class="widget-tags" style="padding: 10px;">
                         <span>${new Date(item.created_at).toLocaleDateString()}</span>
                     </div>
                     <button class="delete-btn" onclick="showConfirmDialog('${item.id}')">

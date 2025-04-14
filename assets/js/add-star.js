@@ -184,3 +184,29 @@ async function Bookmarked(url, userId) {
     const isBookmarked = bookmarks.some((bookmark) => bookmark.url === url);
     return isBookmarked;
 }
+
+async function downloadImg(imageID, imageUrl) {
+    downloadText.innerText = "请稍候…";
+    fetch(imageUrl)
+        .then((response) => response.blob())
+        .then((blob) => {
+            // 创建一个临时的URL指向该Blob对象
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement("a");
+            a.style.display = "none";
+            a.href = url;
+            a.download = `${imageID}.jpg`; // 下载的文件名
+            document.body.appendChild(a);
+            a.click();
+            window.URL.revokeObjectURL(url); // 释放URL对象
+            downloadText.innerText = "下载成功";
+        })
+        .catch(() => {
+            downloadText.innerText = "下载失败";
+            showConfirmDialog("下载失败！尝试手动下载？", (confirmed) => {
+                if (confirmed) {
+                    window.open(`${imageUrl}`, "长按保存图片");
+                }
+            }, "mdi-download-off");
+        });    
+}
