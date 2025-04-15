@@ -118,14 +118,15 @@ function updateNotificationsPosition() {
     }
 }
 
-async function addStar(id, imgUrl) {
-    starText.innerText = "请稍候…";
+async function addStar(buttonID, id, imgUrl) {
+    var starBtn = document.getElementById(`${buttonID}`);
+    starBtn.innerText = "请稍候…";
 
     const userId = await getUserId();
     if (!userId) {
         showConfirmDialog('请先登录以使用收藏功能!', (confirmed) => {
-            if (confirmed) { window.open('/user/login/'); starText.innerText = "添加收藏"; }
-            else { showMessage('用户未登录！', 'warning'); starText.innerText = "请先登录"; }
+            if (confirmed) { window.open('/user/login/'); starBtn.innerText = "添加收藏"; }
+            else { showMessage('用户未登录！', 'warning'); starBtn.innerText = "请先登录"; }
         }, "mdi-login");
         return;
     }
@@ -134,7 +135,7 @@ async function addStar(id, imgUrl) {
     const isBookmarked = await Bookmarked(detailUrl, userId);
     if(isBookmarked) {
         showMessage('您已经收藏过了！', 'warning');
-        starText.innerText = "已收藏";
+        starBtn.innerText = "已收藏";
         return;
     }
 
@@ -144,18 +145,18 @@ async function addStar(id, imgUrl) {
             .insert([{ user_id: userId, url: detailUrl, image: imgUrl, created_at: new Date().toISOString() }]);
 
         if (error) {
-            starText.innerText = "收藏失败";
+            starBtn.innerText = "收藏失败";
             showConfirmDialog('添加收藏失败，请重试', () => {
-                starText.innerText = "添加收藏";
+                starBtn.innerText = "添加收藏";
             }, "mdi-alert-circle");
         } else {
-            starText.innerText = "收藏成功";
+            starBtn.innerText = "收藏成功";
             showMessage('已添加到收藏！', 'success');
         }
     } catch (error) {
         console.error('Error adding to favorites:', error);
         showConfirmDialog('添加收藏失败，请重试', () => {
-            starText.innerText = "添加收藏";
+            starBtn.innerText = "添加收藏";
         }, "mdi-alert-circle");
     }
 }
@@ -185,8 +186,9 @@ async function Bookmarked(url, userId) {
     return isBookmarked;
 }
 
-async function downloadImg(imageID, imageUrl) {
-    downloadText.innerText = "请稍候…";
+async function downloadImg(buttonID, imageID, imageUrl) {
+    var downloadBtn = document.getElementById(`${buttonID}`);
+    downloadBtn.innerText = "请稍候…";
     fetch(imageUrl)
         .then((response) => response.blob())
         .then((blob) => {
@@ -199,10 +201,10 @@ async function downloadImg(imageID, imageUrl) {
             document.body.appendChild(a);
             a.click();
             window.URL.revokeObjectURL(url); // 释放URL对象
-            downloadText.innerText = "下载成功";
+            downloadBtn.innerText = "下载成功";
         })
         .catch(() => {
-            downloadText.innerText = "下载失败";
+            downloadBtn.innerText = "下载失败";
             showConfirmDialog("下载失败！尝试手动下载？", (confirmed) => {
                 if (confirmed) {
                     window.open(`${imageUrl}`, "长按保存图片");
