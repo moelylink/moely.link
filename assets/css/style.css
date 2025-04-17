@@ -3287,6 +3287,12 @@ body {
     opacity: 0;
     font-size: 14px;
 }
+@media (max-width: 768px) {
+    .thumb .widget-tags {
+        font-size: 12px;
+        padding: 3px 5px;
+    }
+}
 
 .thumb:hover .widget-tags {
     opacity: 1;
