@@ -7,10 +7,11 @@ Disallow: /about/
 Disallow: /tos/
 Disallow: /links/
 Disallow: /update/
+Disallow: /urls.txt
 
 User-agent: *
 Allow: /
 Disallow: /go/
-Disallow: /urls.txt
+Disallow: /.gitignore
 
 Sitemap: https://www.moely.link/sitemap.xml
