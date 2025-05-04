@@ -12,6 +12,5 @@ Disallow: /urls.txt
 User-agent: *
 Allow: /
 Disallow: /go/
-Disallow: /.gitignore
 
 Sitemap: https://www.moely.link/sitemap.xml
