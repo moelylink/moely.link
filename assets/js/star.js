@@ -120,10 +120,10 @@ function renderBookmarks(bookmarks, page) {
             <div class="portfolio-item" data-id="${item.id}">
                 <div class="thumb">
                     <a href="${item.url}">
-                        <img class="lazyload" data-src="${item.image}" src="/assets/img/loading.gif" alt="Bookmarked content">
+                        <img class="img-item lazyload" data-src="${item.image}" src="/assets/img/loading.gif" alt="收藏图片：${item.id}">
                     </a>
                     <div class="widget-tags" style="padding: 10px;">
-                        <span>${new Date(item.created_at).toLocaleDateString()}</span>
+                        <span>收藏时间：${new Date(item.created_at).toLocaleDateString()}</span>
                     </div>
                     <button class="delete-btn" onclick="showConfirmDialog('${item.id}')">
                         <span class="mdi mdi-delete"></span>
@@ -225,7 +225,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
 // 添加删除按钮样式
 const deleteBtnStyle = document.createElement('style');
-deleteBtnStyle.textContent = `.delete-btn{position:absolute;top:8px;right:8px;width:32px;height:32px;border-radius:4px;background:rgba(255,255,255,.9);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .3s ease;box-shadow:0 2px 4px rgba(0,0,0,.1);color:#666}.delete-btn:hover{background:#ff4d4f;color:#fff}.delete-btn .mdi{font-size:20px}.portfolio-item{position:relative}`;
+deleteBtnStyle.textContent = `.delete-btn{position:absolute;top:8px;right:8px;width:32px;height:32px;border-radius:4px;background:rgba(250, 250, 250, 0.9);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .3s ease;box-shadow:0 2px 4px rgba(0, 0, 0, 0.3);color: #ff2225}.delete-btn:hover{background:#ff4d4f;color:#fff}.delete-btn .mdi{font-size:20px}.portfolio-item{position:relative}`;
 document.head.appendChild(deleteBtnStyle);
 
 // 添加确认弹窗样式
