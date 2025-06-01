@@ -2230,7 +2230,7 @@ dl.toggle.time-line:before {
     display: inline-block;
     width: 130px;
     letter-spacing: 2px;
-    text-transform: uppercase; 
+    text-transform: uppercase;
     color: #000;
     font-size: 12px;
 }

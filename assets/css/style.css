@@ -697,7 +697,7 @@ body{
     width: 100%;
     padding: 0;
     letter-spacing: 0.5px;
-    text-transform: uppercase;
+    text-transform: none!important;
     background: none;
 }
 
@@ -2240,10 +2240,10 @@ body {
 }
 
 .body_has-navbar-left .container {
-    max-width: 1500px;
+    max-width: 500px;
 }
 
-@media (min-width: 800px) {
+@media (min-width: 768px) {
     .body_has-navbar-left .container {
         max-width: 700px;
     }
@@ -2255,7 +2255,7 @@ body {
     }
 }
 
-@media (min-width: 1200px) {
+@media (min-width: 1170px) {
     .body_has-navbar-left .container {
         max-width: 1000px;
     }
@@ -2271,13 +2271,13 @@ body {
     max-width: 50%;
 }
 
-@media (min-width: 720px) {
+@media (min-width: 768px) {
     .body_has-navbar-left .portfolio .portfolio-item {
         width: 33.33333333%;
     }
 }
 
-@media (min-width: 1000px) {
+@media (min-width: 1170px) {
     .body_has-navbar-left .portfolio .portfolio-item {
         width: 25%;
     }
@@ -3781,13 +3781,14 @@ body {
     .menuzord-responsive .menuzord-menu>li>a {
         display: block;
         width: 100%;
-        padding: 12px 20px;
-        border-bottom: solid 1px #f0f0f0;
+        padding: 10px 20px;
+        border-top: solid 1px #f0f0f0;
+        height: 40px;
     }
 
-    .menuzord-responsive .menuzord-menu>li:first-child>a {
+    /*.menuzord-responsive .menuzord-menu>li:first-child>a {
         border-top: solid 1px #f0f0f0;
-    }
+    }*/
 
     .menuzord-responsive .menuzord-menu ul.dropdown,
     .menuzord-responsive .menuzord-menu ul.dropdown li ul.dropdown {
@@ -3819,9 +3820,9 @@ body {
         padding-left: 80px !important;
     }
 
-    .menuzord-responsive .menuzord-menu.menuzord-indented>li>ul.dropdown>li:hover>a {
-        /*padding-left: 50px!important*/
-    }
+    /*.menuzord-responsive .menuzord-menu.menuzord-indented>li>ul.dropdown>li:hover>a {
+        padding-left: 50px!important
+    }*/
 
     .menuzord-responsive .menuzord-menu.menuzord-indented>li>ul.dropdown>li>ul.dropdown>li:hover>a {
         padding-left: 70px !important;
@@ -3834,21 +3835,21 @@ body {
     .menuzord-responsive .menuzord-menu li .indicator {
         position: absolute;
         top: 0;
-        right: 0;
+        right: 2px;
         width: 60px;
-        height: 45px;
+        height: 40px;
         text-align: center;
-        border-left: solid 1px #f5f5f5;
+        border: solid 2px #f5f5f5;
         font-size: 22px;
-        line-height: 43px;
+        line-height: 37px;
     }
 
     .menuzord-responsive .menuzord-menu li ul.dropdown li .indicator {
         top: 0;
         right: 0;
-        height: 38px;
+        height: 35px;
         font-size: 18px;
-        line-height: 36px;
+        line-height: 32px;
     }
 
     .menuzord-responsive .menuzord-menu>li>.megamenu {
@@ -3863,7 +3864,7 @@ body {
         display: block;
         float: none;
         width: 100% !important;
-        margin-top: 15px;
+        margin-top: 10px;
         margin-left: 0;
     }
 
@@ -3888,7 +3889,7 @@ body {
     /*Mneu items */
     /*-------------------------*/
     .menuzord-responsive .menuzord-menu>li>a {
-        padding: 12px 20px !important;
+        padding: 10px 20px !important;
         line-height: 20px;
     }
 
@@ -4301,26 +4302,37 @@ body {
     padding: 20px;
     box-sizing: border-box;
     display: flex;
-    justify-content: center;
-    align-items: flex-start;
+    justify-content: space-between;
+    flex-direction: column;
+    align-items: center;
 }
 
 .aa-Autocomplete {
-    width: 150%;
+    left: 50%;
+    width: 300%;
+    max-width: 500px;
+}
+
+@media (max-width: 768px) {
+    .aa-Autocomplete {
+        transform: translateX(-20%);
+    }
 }
 
 #search {
     margin: 0 auto;
     width: 20%;
+    left: 50%;
+    transform: translateX(-50%);
     align-items: center;
     margin-top: 20px;
 }
 
 #cancel-search {
-    margin: 0 auto;
-    padding: 0 20px;
-    height: 50px;
-    font-size: 18px;
+    margin-right: 5%;
+    padding: 0 15px;
+    height: 45px;
+    font-size: 16px;
     background-color: #f44336;
     color: white;
     border: none;

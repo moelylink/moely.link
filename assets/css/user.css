@@ -527,7 +527,7 @@ a:hover {
     line-height: 40px;
     display: block;
     font-size: 1em;
-    color: #FFFFFF;
+    color: #fff;
     background-color: rgba(140, 110, 212, 0.5);
     position: relative;
 }
@@ -540,7 +540,7 @@ a:hover {
 }
 .float-left{
     position: fixed;
-    bottom: 80px;
+    bottom: 60px;
     left: 20px;
     z-index: 999;
     text-align: center;
@@ -552,7 +552,7 @@ a:hover {
     line-height: 40px;
     display: block;
     font-size: 1em;
-    color: #fffb00;
+    color: #fff;
     background-color: rgba(250, 75, 50, 0.5);
     position: relative;
 }
@@ -560,7 +560,8 @@ a:hover {
     background-color: #4bd2ff;
 }
 .float-left.round .float-btn{
-    border-radius: 20px;
+    margin-top: 10px;
+    border-radius: 10px;
 }
 
 .quick-jump{
