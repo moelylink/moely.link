@@ -192,16 +192,28 @@ async function downloadImg(buttonID, imageID, imageUrl) {
     fetch(imageUrl)
         .then((response) => response.blob())
         .then((blob) => {
-            // 创建一个临时的URL指向该Blob对象
-            const url = window.URL.createObjectURL(blob);
-            const a = document.createElement("a");
-            a.style.display = "none";
-            a.href = url;
-            a.download = `${imageID}.jpg`; // 下载的文件名
-            document.body.appendChild(a);
-            a.click();
-            window.URL.revokeObjectURL(url); // 释放URL对象
-            downloadBtn.innerText = "下载成功";
+            const reader = new FileReader();
+            reader.onloadend = () => {
+                const base64data = reader.result;
+
+                // 在 Android WebView 中发送 base64 数据给原生应用
+                if (window.Android && typeof window.Android.downloadBlob === 'function') {
+                    window.Android.downloadBlob(base64data, `${imageID}.jpg`);
+                    downloadBtn.innerText = "下载成功";
+                } else {
+                    // Web 浏览器备用方案
+                    const url = window.URL.createObjectURL(blob);
+                    const a = document.createElement("a");
+                    a.style.display = "none";
+                    a.href = url;
+                    a.download = `${imageID}.jpg`;
+                    document.body.appendChild(a);
+                    a.click();
+                    window.URL.revokeObjectURL(url);
+                    downloadBtn.innerText = "下载成功";
+                }
+            };
+            reader.readAsDataURL(blob); // 将Blob转换为Base64
         })
         .catch(() => {
             downloadBtn.innerText = "下载失败";

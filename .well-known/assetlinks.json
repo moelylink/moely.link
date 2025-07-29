@@ -1,0 +1,12 @@
+[
+    {
+        "relation": ["delegate_permission/common.handle_all_urls"],
+        "target": {
+            "namespace": "android_app",
+            "package_name": "link.moely.mobile",
+            "sha256_cert_fingerprints": [
+                "AD:3B:09:40:ED:28:71:9A:04:FB:29:F7:DB:9B:33:92:83:9E:54:C2:C0:1A:AE:9C:FB:C7:38:17:10:98:04:A0"
+            ]
+        }
+    }
+]
