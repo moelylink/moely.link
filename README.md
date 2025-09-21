@@ -4,6 +4,8 @@
 
 [网站地址](https://www.moely.link/) | [TG频道](https://t.me/gongzhutonghao) | [赞助我们](https://afdian.com/a/awaowo)
 
+萌哩手机客户端：[官网](https://mobile.moely.link/) | [GitHub仓库](https://github.com/moelylink/moely-mobile)
+
 ## 网站特性
 
 - 响应式瀑布流设计
@@ -13,9 +15,10 @@
 - 每张图均配有来源链接
 - 支持最高4K分辨率的原图下载
 - PWA（渐进式网络应用程序）支持
-- 随机传送功能，每次一点小惊喜～
+- 随机显示20张图片+随机传送到单张图片，每次一点小惊喜～
 - 用户登录/注册功能，支持第三方账号登录
 - 支持将图片添加收藏，收藏列表云端同步
+- 关键词搜索功能，支持多参数搜索
 
 ## 技术栈
 
