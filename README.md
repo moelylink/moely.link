@@ -4,8 +4,6 @@
 
 [网站地址](https://www.moely.link/) | [TG频道](https://t.me/gongzhutonghao) | [赞助我们](https://afdian.com/a/awaowo)
 
-萌哩手机客户端：[官网](https://mobile.moely.link/) | [GitHub仓库](https://github.com/moelylink/moely-mobile)
-
 ## 网站特性
 
 - 响应式瀑布流设计
@@ -36,3 +34,9 @@
 ## 更多信息
 
 请参见 [关于页面](https://www.moely.link/about/)
+
+## 其他产品
+
+萌哩手机客户端：[官网](https://mobile.moely.link/) | [GitHub仓库](https://github.com/moelylink/moely-mobile)
+
+萌哩壁纸 - 每日随机二次元壁纸：[官网](https://wallpaper.moely.link/) |  [GitHub仓库](https://github.com/moelylink/moely-wallpaper)
