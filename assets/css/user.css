@@ -56,6 +56,10 @@ html {
     min-height: 600px;
 }
 
+.dark-mode .auth-container {
+    background-color: #333;
+}
+
 .forms-container {
     position: absolute;
     top: 0;
@@ -185,12 +189,14 @@ html {
     font-size: 32px;
     margin-bottom: 20px;
     font-weight: 600;
+    color: #333;
 }
 
 .overlay p {
     font-size: 16px;
     margin-bottom: 30px;
     line-height: 1.5;
+    color: #555;
 }
 
 .header {
@@ -200,6 +206,10 @@ html {
     margin-bottom: 32px;
     color: #2d3748;
     letter-spacing: -0.5px;
+}
+
+.dark-mode .header {
+    color: #eee;
 }
 
 .input-item {
@@ -486,6 +496,14 @@ a:hover {
     transition: color 0.3s ease;
 }
 
+.dark-mode .third-party-login .btn {
+    border: 2px solid #666;
+}
+
+.dark-mode .third-party-login i {
+    color: #bbb;
+}
+
 .third-party-login .btn:hover {
     border-color: #aaa;
     transform: scale(1.1);
@@ -511,6 +529,10 @@ a:hover {
     .login-wrapper {
         width: 150rem;
     }
+}
+
+.pagenumInput {
+    color: #333;
 }
 
 .float-right{

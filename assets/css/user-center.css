@@ -22,6 +22,11 @@
     margin: 0 auto;
 }
 
+.dark-mode .card-panel {
+    box-shadow: 0 6px 12px rgba(255, 255, 255, 0.3);
+    background-color: rgba(0, 0, 0, 0.8);
+}
+
 @media screen and (max-width: 768px) {
     .card-panel {
         width: 400px;
@@ -90,6 +95,10 @@ h1.center-align {
     text-align: center;
 }
 
+.dark-mode h1.center-align {
+    color: #eee;
+}
+
 h5 {
     font-size: 1.5rem;
     color: #555;
@@ -106,6 +115,10 @@ h5:hover {
     font-size: 1.4rem;
     color: #666;
     margin: 5px 0;
+}
+
+.dark-mode .user-info p {
+    color: #bbb;
 }
 
 .input-field {
@@ -197,6 +210,14 @@ h5:hover {
 
 .third-party-item i {
     margin-right: 8px;
+}
+
+.dark-mode .third-party-item {
+    color: #ddd;
+}
+
+.third-party-item:hover {
+    background-color: #333;
 }
 
 .logout-btn {
