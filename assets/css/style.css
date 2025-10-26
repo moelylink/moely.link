@@ -38,7 +38,7 @@
     background: #222;
 }
 
-.dark-mode .tb-preloader-wave:after {    
+.dark-mode .tb-preloader-wave:before, .darkmode .tb-preloader-wave:after {    
     background: #fff;
 }
 
