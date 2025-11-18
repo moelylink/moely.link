@@ -3211,7 +3211,6 @@ body {
     z-index: 999;
     color: #333333;
     box-shadow: 0 3px 3px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
-    transition: all 0.5s ease-in-out;
 }
         
 .theme-toggle-button:hover {
