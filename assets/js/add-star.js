@@ -1,7 +1,3 @@
-const supabaseUrl = 'https://fefckqwvcvuadiixvhns.supabase.co';
-const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZlZmNrcXd2Y3Z1YWRpaXh2aG5zIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzYzNDE5OTUsImV4cCI6MjA1MTkxNzk5NX0.-OUllwH7v2K-j4uIx7QQaV654R5Gz5_1jP4BGdkWWfg';
-const client = supabase.createClient(supabaseUrl, supabaseKey);
-
 let notificationCount = 0;
 const notifications = new Set();
 const style = document.createElement('style');
@@ -125,7 +121,7 @@ async function addStar(buttonID, id, imgUrl) {
     const userId = await getUserId();
     if (!userId) {
         showConfirmDialog('请先登录以使用收藏功能!', (confirmed) => {
-            if (confirmed) { window.open('/user/login/'); starBtn.innerText = "添加收藏"; }
+            if (confirmed) { window.location.href = 'https://user.moely.link/login/?redirect=' + window.location.href; starBtn.innerText = "添加收藏"; }
             else { showMessage('用户未登录！', 'warning'); starBtn.innerText = "请先登录"; }
         }, "mdi-login");
         return;
