@@ -182,9 +182,20 @@ async function Bookmarked(url, userId) {
     return isBookmarked;
 }
 
-async function downloadImg(buttonID, imageID, imageUrl) {
+async function downloadImg(buttonID, imageID, imageEncode) {
     var downloadBtn = document.getElementById(`${buttonID}`);
     downloadBtn.innerText = "请稍候…";
+
+    const userId = await getUserId();
+    if (!userId) {
+        showConfirmDialog('登录账号后即可下载原图!', (confirmed) => {
+            if (confirmed) { window.location.href = 'https://user.moely.link/login/?redirect=' + window.location.href; downloadBtn.innerText = "下载原图"; }
+            else { showMessage('用户未登录！', 'warning'); downloadBtn.innerText = "登录后下载"; }
+        }, "mdi-login");
+        return;
+    }
+    
+    var imageUrl = atob(imageEncode)
     fetch(imageUrl)
         .then((response) => response.blob())
         .then((blob) => {
