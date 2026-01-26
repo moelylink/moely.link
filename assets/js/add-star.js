@@ -229,5 +229,5 @@ async function downloadImg(buttonID, imageID, imageEncode) {
                     window.open(`${imageUrl}`, "长按保存图片");
                 }
             }, "mdi-download-off");
-        });    
+        });
 }
