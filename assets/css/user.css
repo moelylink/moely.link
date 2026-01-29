@@ -101,3 +101,93 @@ a:hover {
     transform: translateY(-2px);
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
+
+/* ==============================================
+   Daily Notification Banner
+   ============================================== */
+#daily-notification-banner {
+    position: relative;
+    z-index: 999;
+    width: 100%;
+    background-color: #fcf8e3;
+    color: #8a6d3b;
+    border-bottom: 1px solid #faebcc;
+    font-size: 14px;
+    line-height: 20px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    margin-top: 50px;
+    margin-bottom: -50px;
+    /* --- 新增：动画过渡关键属性 --- */
+    overflow: hidden; /* 必须：防止内容溢出，保证高度收缩时内容不显示 */
+    max-height: 200px; /* 设定一个足够大的高度，用于动画起始状态 */
+    opacity: 1;
+    transition: all 0.5s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+/* 内部容器 */
+#daily-notification-banner .container {
+    padding-top: 10px;
+    padding-bottom: 10px;
+    transition: padding 0.5s;
+}
+
+#daily-notification-banner.closing {
+    max-height: 0;
+    opacity: 0;
+    border-bottom-width: 0;
+    margin: 0;
+}
+
+#daily-notification-banner.closing .container {
+    padding-top: 0;
+    padding-bottom: 0;
+}
+
+.banner-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.banner-text {
+    padding-right: 30px;
+    text-align: left;
+    width: 100%;
+}
+
+.close-banner {
+    background: transparent;
+    border: none;
+    color: inherit;
+    font-size: 24px;
+    font-weight: bold;
+    line-height: 1;
+    cursor: pointer;
+    opacity: 0.5;
+    padding: 0 10px;
+    transition: opacity 0.3s;
+}
+
+.close-banner:hover {
+    opacity: 1;
+}
+
+/* Dark Mode 适配 */
+.dark-mode #daily-notification-banner {
+    background-color: #393400;
+    color: #ddd;
+    border-bottom: 1px solid #55511d;
+}
+
+/* 移动端适配 */
+@media (max-width: 768px) {
+    #daily-notification-banner {
+        font-size: 12px;
+        line-height: 16px;
+        margin-top: 40px;
+        margin-bottom: -50px;
+    }
+    .banner-content {
+        align-items: flex-start;
+    }
+}
