@@ -46,10 +46,10 @@ document.addEventListener('DOMContentLoaded', () => {
         // B. 如果没有保存的位置 (第一次访问)，根据 CSS 初始值计算 left
         
         // 获取按钮的初始位置 (假设 CSS 中仍然保留 right: 20px; top: 80px;)
-        // 1. 临时设置 position: fixed; right: 20px; top: 80px; 来获取位置
+        // 1. 临时设置来获取位置
         toggleBtn.style.position = 'fixed'; // 确保定位正确
         toggleBtn.style.right = '20px';
-        toggleBtn.style.top = '80px';
+        toggleBtn.style.top = '120px';
         
         // 2. 强制浏览器计算并获取其精确的 left 坐标
         const rect = toggleBtn.getBoundingClientRect();

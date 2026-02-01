@@ -102,29 +102,54 @@ a:hover {
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
+.theme-toggle-button {
+    left: 20px;
+    top: 120px;
+    padding: 10px 20px;
+    font-size: 14px;
+    cursor: pointer;
+    border: none;
+    display: block;
+    position: fixed;
+    border-radius: 20px; /* 胶囊形状 */
+    background-color: #e0e0e0;
+    z-index: 999;
+    color: #333333;
+    box-shadow: 0 3px 3px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
+}
+        
+.theme-toggle-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 6px rgba(0, 0, 0, 0.2), 0 6px 10px rgba(0, 0, 0, 0.3);
+}
+
+.dark-mode .theme-toggle-button {
+    background-color: #444444;
+    color: #eeeeee;
+    box-shadow: 0 3px 3px rgba(0, 0, 0, 0.8), 0 3px 6px rgba(0, 0, 0, 0.9);
+}
+
 /* ==============================================
    Daily Notification Banner
    ============================================== */
 #daily-notification-banner {
-    position: relative;
-    z-index: 999;
+    position: fixed;
+    left: 0;
     width: 100%;
+    z-index: 999;
+    display: none;
     background-color: #fcf8e3;
     color: #8a6d3b;
     border-bottom: 1px solid #faebcc;
     font-size: 14px;
     line-height: 20px;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
-    margin-top: 50px;
-    margin-bottom: -50px;
-    /* --- 新增：动画过渡关键属性 --- */
-    overflow: hidden; /* 必须：防止内容溢出，保证高度收缩时内容不显示 */
-    max-height: 200px; /* 设定一个足够大的高度，用于动画起始状态 */
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    /* 动画过渡 */
+    overflow: hidden;
     opacity: 1;
     transition: all 0.5s cubic-bezier(0.25, 1, 0.5, 1);
 }
 
-/* 内部容器 */
 #daily-notification-banner .container {
     padding-top: 10px;
     padding-bottom: 10px;
@@ -132,45 +157,35 @@ a:hover {
 }
 
 #daily-notification-banner.closing {
-    max-height: 0;
     opacity: 0;
-    border-bottom-width: 0;
-    margin: 0;
+    transform: translateY(-20px); 
+    pointer-events: none; /* 动画期间禁止再次点击 */
 }
 
-#daily-notification-banner.closing .container {
-    padding-top: 0;
-    padding-bottom: 0;
+/* 给 body 的 padding 增加过渡，让页面内容平滑上下移动 */
+body {
+    transition: padding-top 0.5s cubic-bezier(0.25, 1, 0.5, 1), background-color 0.3s, color 0.3s!important;
 }
 
+/* 样式微调 */
 .banner-content {
     display: flex;
     justify-content: space-between;
     align-items: center;
 }
-
 .banner-text {
-    padding-right: 30px;
-    text-align: left;
-    width: 100%;
+    padding-right: 15px;
 }
-
 .close-banner {
     background: transparent;
     border: none;
     color: inherit;
     font-size: 24px;
-    font-weight: bold;
-    line-height: 1;
     cursor: pointer;
-    opacity: 0.5;
-    padding: 0 10px;
-    transition: opacity 0.3s;
+    line-height: 1;
+    opacity: 0.6;
 }
-
-.close-banner:hover {
-    opacity: 1;
-}
+.close-banner:hover { opacity: 1; }
 
 /* Dark Mode 适配 */
 .dark-mode #daily-notification-banner {
@@ -184,8 +199,6 @@ a:hover {
     #daily-notification-banner {
         font-size: 12px;
         line-height: 16px;
-        margin-top: 40px;
-        margin-bottom: -50px;
     }
     .banner-content {
         align-items: flex-start;

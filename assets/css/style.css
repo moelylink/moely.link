@@ -3196,30 +3196,3 @@ body {
 .dark-mode .aa-Item:hover {
     background-color: #222 !important;
 }
-
-.theme-toggle-button {
-    left: 20px;
-    top: 80px;
-    padding: 10px 20px;
-    font-size: 14px;
-    cursor: pointer;
-    border: none;
-    display: block;
-    position: fixed;
-    border-radius: 20px; /* 胶囊形状 */
-    background-color: #e0e0e0;
-    z-index: 999;
-    color: #333333;
-    box-shadow: 0 3px 3px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
-}
-        
-.theme-toggle-button:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 6px 6px rgba(0, 0, 0, 0.2), 0 6px 10px rgba(0, 0, 0, 0.3);
-}
-
-.dark-mode .theme-toggle-button {
-    background-color: #444444;
-    color: #eeeeee;
-    box-shadow: 0 3px 3px rgba(0, 0, 0, 0.8), 0 3px 6px rgba(0, 0, 0, 0.9);
-}
