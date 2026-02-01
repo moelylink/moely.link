@@ -2,11 +2,11 @@ User-agent: Algolia Crawler
 Disallow: /category/
 Disallow: /page/
 Disallow: /tags/*/page/
-Disallow: /user/
 Disallow: /about/
 Disallow: /tos/
 Disallow: /links/
 Disallow: /update/
+Disallow: /go/
 Disallow: /urls.txt
 
 User-agent: *
