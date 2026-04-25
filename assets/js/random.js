@@ -37,7 +37,7 @@ async function loadAndRender() {
         const items = shuffleArray(data).slice(0, 20);
     
         const container = document.querySelector('.portfolio');
-        container.innerHTML = items.map(item => `
+        let htmlItems = items.map(item => `
             <div class="portfolio-item">
                 <div class="thumb">
                     <a href="/img/${item.id}/">
@@ -50,7 +50,29 @@ async function loadAndRender() {
                     </div>
                 </div>
             </div>
-        `).join('');
+        `);
+
+        if (window.sitePromos && window.sitePromos.length > 0 && items.length >= 10 && Math.random() > 0) {
+            const promo = window.sitePromos[Math.floor(Math.random() * window.sitePromos.length)];
+            const adHtml = `
+                <div class="portfolio-item promo-item">
+                    <div class="thumb">
+                        <a href="/v/?url=${promo.url}" target="_blank" rel="nofollow">
+                            <img class="img-item" src="${promo.img}" alt="${promo.title}" style="width: 100%; display: block;">
+                        </a>
+                        <div class="widget-tags">
+                            ${promo.title}
+                            <br/>${promo.description}
+                        </div>
+                    </div>
+                </div>
+            `;
+            const pos = Math.floor(Math.random() * (htmlItems.length - 1)) + 1;
+            htmlItems.splice(pos, 0, adHtml);
+        }
+
+        container.innerHTML = htmlItems.join('');
+
     
         // 先初始化一次
         initMasonry();
