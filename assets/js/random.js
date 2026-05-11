@@ -43,7 +43,7 @@ async function loadAllDataAndFirstPage() {
         const data = await resp.json();
         // 随机排序好
         allData = shuffleArray(data);
-        
+
         // 加载第一批
         loadNextBatch();
     } catch (err) {
@@ -60,16 +60,16 @@ function loadNextBatch() {
     // 取出20个
     const itemsToTake = 20;
     const batch = allData.splice(0, itemsToTake);
-    
+
     if (batch.length === 0) {
         isLoading = false;
         return;
     }
-    
+
     loadedGroups++;
 
     const container = document.querySelector('.portfolio');
-    
+
     // 生成DOM元素数组
     let elements = batch.map(item => {
         const div = document.createElement('div');
@@ -90,7 +90,7 @@ function loadNextBatch() {
     });
 
     // 穿插广告
-    if (window.sitePromos && window.sitePromos.length > 0 && Math.random() > 0.2) {
+    if (window.sitePromos && window.sitePromos.length > 0) {
         const promo = window.sitePromos[Math.floor(Math.random() * window.sitePromos.length)];
         const adDiv = document.createElement('div');
         adDiv.className = 'portfolio-item promo-item';
@@ -122,14 +122,14 @@ function loadNextBatch() {
     }
 
     // 只针对这批新元素监听图片加载，而不是整个 container
-    imagesLoaded(elements, function() {
+    imagesLoaded(elements, function () {
         if (masonryInstance) {
             masonryInstance.layout();
         }
         isLoading = false;
-    }).on('progress', function() {
-         // 某张图加载后，再次重排修正高度
-         if (masonryInstance) masonryInstance.layout();
+    }).on('progress', function () {
+        // 某张图加载后，再次重排修正高度
+        if (masonryInstance) masonryInstance.layout();
     });
 }
 
