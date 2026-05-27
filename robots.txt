@@ -1,7 +1,7 @@
 User-agent: Algolia Crawler
 Disallow: /category/
 Disallow: /page/
-Disallow: /tags/*/page/
+Disallow: /tags/
 Disallow: /about/
 Disallow: /tos/
 Disallow: /links/
