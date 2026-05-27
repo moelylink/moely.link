@@ -38,11 +38,25 @@ function initMasonry() {
 
 async function loadAllDataAndFirstPage() {
     try {
-        const resp = await fetch('/index.json');
+        const [resp, promoResp] = await Promise.all([
+            fetch('/index.json'),
+            fetch('/promos.json').catch(err => {
+                console.warn('Failed to load promos:', err);
+                return null;
+            })
+        ]);
+        
         if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
         const data = await resp.json();
-        // 随机排序好
         allData = shuffleArray(data);
+
+        if (promoResp && promoResp.ok) {
+            try {
+                window.sitePromos = await promoResp.json();
+            } catch (e) {
+                console.error('Failed to parse promos.json:', e);
+            }
+        }
 
         // 加载第一批
         loadNextBatch();
