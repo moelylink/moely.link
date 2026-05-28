@@ -12,7 +12,7 @@
      Pre loader init
      ===============================================*/
 
-    var $portfolio = $('.portfolio').masonry({
+    var $portfolio = $('.portfolio').not('#search-portfolio, .random-portfolio').masonry({
         itemSelector: '.portfolio-item',
     });
 

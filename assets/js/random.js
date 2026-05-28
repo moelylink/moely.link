@@ -15,10 +15,18 @@ document.addEventListener('DOMContentLoaded', () => {
     initMasonry();
     loadAllDataAndFirstPage();
 
-    // 额外再绑一次 lazysizes 完全加载事件
-    document.addEventListener('lazyloaded', () => {
-        if (masonryInstance) masonryInstance.layout();
-    });
+    // Intercept all image loads and errors during capturing phase to force Masonry relayout
+    document.addEventListener('load', (e) => {
+        if (e.target && e.target.tagName === 'IMG') {
+            if (masonryInstance) masonryInstance.layout();
+        }
+    }, true);
+
+    document.addEventListener('error', (e) => {
+        if (e.target && e.target.tagName === 'IMG') {
+            if (masonryInstance) masonryInstance.layout();
+        }
+    }, true);
 
     // 监听滚动
     window.addEventListener('scroll', handleScroll);
@@ -34,6 +42,7 @@ function initMasonry() {
         gutter: 0,
         transitionDuration: '0.4s'
     });
+    window.masonryInstance = masonryInstance;
 }
 
 async function loadAllDataAndFirstPage() {
@@ -91,7 +100,7 @@ function loadNextBatch() {
         div.innerHTML = `
             <div class="thumb">
                 <a href="/img/${item.id}/">
-                    <img class="img-item lazyload" data-src="${item.urls}" src="/assets/img/loading.gif" alt="${item.id}">
+                    <img class="img-item lazyload" data-src="${item.urls}" src="/assets/img/loading.gif" alt="${item.id}" onload="if(window.masonryInstance) window.masonryInstance.layout();" onerror="if(window.masonryInstance) window.masonryInstance.layout();">
                     ${item.total ? `<span class="total-num">${item.total}</span>` : ''}
                 </a>
                 <div class="widget-tags">
