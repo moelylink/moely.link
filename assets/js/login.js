@@ -4,38 +4,43 @@ const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZS
 // ============================================================
 // 1. 读取 .moely.link 下的 Cookie
 // ============================================================
-const rootDomainStorage = {
-    getItem: (key) => {
-        const name = key + "=";
-        const decodedCookie = decodeURIComponent(document.cookie);
-        const ca = decodedCookie.split(';');
-        for(let i = 0; i < ca.length; i++) {
-            let c = ca[i];
-            while (c.charAt(0) === ' ') c = c.substring(1);
-            if (c.indexOf(name) === 0) return c.substring(name.length, c.length);
+if (typeof window.rootDomainStorage === 'undefined') {
+    window.rootDomainStorage = {
+        getItem: (key) => {
+            const name = key + "=";
+            const decodedCookie = decodeURIComponent(document.cookie);
+            const ca = decodedCookie.split(';');
+            for(let i = 0; i < ca.length; i++) {
+                let c = ca[i];
+                while (c.charAt(0) === ' ') c = c.substring(1);
+                if (c.indexOf(name) === 0) return c.substring(name.length, c.length);
+            }
+            return null;
+        },
+        setItem: (key, value) => {
+            const d = new Date();
+            d.setTime(d.getTime() + (365*24*60*60*1000));
+            const expires = "expires="+ d.toUTCString();
+            // 关键：domain=.moely.link 使得 user 和 www 子域名互通
+            document.cookie = `${key}=${value};${expires};domain=.moely.link;path=/;SameSite=Lax;Secure`;
+        },
+        removeItem: (key) => {
+            document.cookie = `${key}=;expires=Thu, 01 Jan 1970 00:00:00 UTC;domain=.moely.link;path=/;`;
         }
-        return null;
-    },
-    setItem: (key, value) => {
-        const d = new Date();
-        d.setTime(d.getTime() + (365*24*60*60*1000));
-        const expires = "expires="+ d.toUTCString();
-        // 关键：domain=.moely.link 使得 user 和 www 子域名互通
-        document.cookie = `${key}=${value};${expires};domain=.moely.link;path=/;SameSite=Lax;Secure`;
-    },
-    removeItem: (key) => {
-        document.cookie = `${key}=;expires=Thu, 01 Jan 1970 00:00:00 UTC;domain=.moely.link;path=/;`;
-    }
-};
+    };
+}
 
 // ============================================================
 // 2. 初始化 Supabase 客户端 (带 auth 配置)
 // ============================================================
-const client = supabase.createClient(supabaseUrl, supabaseKey, {
-    auth: {
-        storage: rootDomainStorage, // 必须使用这个自定义存储
-        autoRefreshToken: true,
-        persistSession: true,
-        detectSessionInUrl: true
-    }
-});
+if (typeof window.client === 'undefined' && typeof supabase !== 'undefined') {
+    window.client = supabase.createClient(supabaseUrl, supabaseKey, {
+        auth: {
+            storage: window.rootDomainStorage, // 必须使用这个自定义存储
+            autoRefreshToken: true,
+            persistSession: true,
+            detectSessionInUrl: true
+        }
+    });
+}
+var client = window.client;

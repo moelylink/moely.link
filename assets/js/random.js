@@ -95,6 +95,10 @@ function loadNextBatch() {
 
     // 生成DOM元素数组
     let elements = batch.map(item => {
+        let displayUser = item.user || '';
+        if (displayUser.startsWith('@')) {
+            displayUser = displayUser.substring(1);
+        }
         const div = document.createElement('div');
         div.className = 'portfolio-item';
         div.innerHTML = `
@@ -103,9 +107,9 @@ function loadNextBatch() {
                     <img class="img-item lazyload" data-src="${item.urls}" src="/assets/img/loading.gif" alt="${item.id}" onload="if(window.masonryInstance) window.masonryInstance.layout();" onerror="if(window.masonryInstance) window.masonryInstance.layout();">
                     ${item.total ? `<span class="total-num">${item.total}</span>` : ''}
                 </a>
-                <div class="widget-tags">
+                <div class="widget-tags" style="background-color: rgba(0,0,0,0.5); color: #eee;">
                     ${item.id}
-                    <br/>By ${item.category} ${item.user}
+                    <br/>By ${item.category} ${displayUser}
                 </div>
             </div>
         `;
@@ -122,6 +126,7 @@ function loadNextBatch() {
                 <a href="/v/?url=${promo.url}" target="_blank" rel="nofollow">
                     <img class="img-item" src="${promo.img}" alt="${promo.title}" style="width: 100%; display: block;">
                 </a>
+                <span class="promo-tag">AD</span>
                 <div class="widget-tags">
                     ${promo.title}
                     <br/>${promo.description}

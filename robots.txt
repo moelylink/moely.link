@@ -2,6 +2,7 @@ User-agent: Algolia Crawler
 Disallow: /category/
 Disallow: /page/
 Disallow: /tags/
+Disallow: /artist/
 Disallow: /about/
 Disallow: /tos/
 Disallow: /links/
