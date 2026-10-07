@@ -34,6 +34,18 @@
     transform-origin: center center;
 }
 
+@media (max-width: 768px) {
+    #tb-preloader .moely-loader-assembly {
+        transform: scale(0.7);
+    }
+}
+
+@media (max-width: 480px) {
+    #tb-preloader .moely-loader-assembly {
+        transform: scale(0.6);
+    }
+}
+
 /* 粉块轨道 */
 #tb-preloader .moely-box-track {
     position: relative;

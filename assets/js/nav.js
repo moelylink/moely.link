@@ -111,6 +111,107 @@
         }
     }
 
+    function initUserDropdown(container) {
+        if (!container) return;
+        const btn = container.querySelector('#site-nav-user-btn');
+        const menu = container.querySelector('#site-nav-user-menu');
+        if (!btn || !menu) return;
+
+        let isClosedByScroll = false;
+
+        function closeMenu() {
+            container.classList.remove('is-open');
+            btn.setAttribute('aria-expanded', 'false');
+        }
+
+        function retractOnScroll() {
+            if (!container.isConnected) {
+                window.removeEventListener('scroll', retractOnScroll);
+                return;
+            }
+
+            const isHovered = container.matches(':hover');
+            const isOpen = container.classList.contains('is-open');
+            const isFocused = container.contains(document.activeElement);
+
+            if (isHovered || isOpen || isFocused) {
+                isClosedByScroll = true;
+                container.classList.add('is-closed-on-scroll');
+                closeMenu();
+                if (isFocused && document.activeElement && typeof document.activeElement.blur === 'function') {
+                    document.activeElement.blur();
+                }
+            }
+        }
+
+        // Toggle dropdown on button click (touch / click)
+        btn.addEventListener('click', function (e) {
+            e.stopPropagation();
+            isClosedByScroll = false;
+            container.classList.remove('is-closed-on-scroll');
+            const currentlyOpen = container.classList.contains('is-open');
+            if (currentlyOpen) {
+                closeMenu();
+            } else {
+                container.classList.add('is-open');
+                btn.setAttribute('aria-expanded', 'true');
+            }
+        });
+
+        // Hover handling
+        container.addEventListener('mouseenter', function () {
+            if (!isClosedByScroll) {
+                btn.setAttribute('aria-expanded', 'true');
+            }
+        });
+
+        container.addEventListener('mouseleave', function () {
+            isClosedByScroll = false;
+            container.classList.remove('is-closed-on-scroll');
+            closeMenu();
+        });
+
+        // Reset scroll retract when mouse moves outside container
+        function onMouseMove(e) {
+            if (!container.isConnected) {
+                document.removeEventListener('mousemove', onMouseMove);
+                return;
+            }
+            if (isClosedByScroll && !container.contains(e.target)) {
+                isClosedByScroll = false;
+                container.classList.remove('is-closed-on-scroll');
+            }
+        }
+
+        // Click outside closes menu
+        function onDocClick(e) {
+            if (!container.isConnected) {
+                document.removeEventListener('click', onDocClick);
+                return;
+            }
+            if (!container.contains(e.target)) {
+                closeMenu();
+            }
+        }
+
+        // Escape key closes menu
+        function onDocKeydown(e) {
+            if (!container.isConnected) {
+                document.removeEventListener('keydown', onDocKeydown);
+                return;
+            }
+            if (e.key === 'Escape' && (container.classList.contains('is-open') || container.matches(':hover'))) {
+                closeMenu();
+                btn.blur();
+            }
+        }
+
+        document.addEventListener('mousemove', onMouseMove);
+        document.addEventListener('click', onDocClick);
+        document.addEventListener('keydown', onDocKeydown);
+        window.addEventListener('scroll', retractOnScroll, { passive: true });
+    }
+
     function renderLoggedInAuth(session) {
         const user = session.user;
         const meta = user.user_metadata || {};
@@ -125,7 +226,7 @@
         const navAuthSlot = document.getElementById('site-nav-auth');
         if (navAuthSlot) {
             navAuthSlot.innerHTML = `
-                <div class="site-nav-user-dropdown-container">
+                <div class="site-nav-user-dropdown-container" id="site-nav-user-dropdown-container">
                     <button type="button" class="site-nav-user-pill" id="site-nav-user-btn" aria-haspopup="true" aria-expanded="false">
                         <span class="nav-user-avatar-wrap">${avatarHtml}</span>
                         <span class="nav-user-name">用户中心</span>
@@ -157,6 +258,12 @@
             const logoutBtn = document.getElementById('nav-btn-logout');
             if (logoutBtn) {
                 logoutBtn.addEventListener('click', handleLogout);
+            }
+
+            // Initialize user dropdown auto-retract & interaction handler
+            const userContainer = document.getElementById('site-nav-user-dropdown-container');
+            if (userContainer) {
+                initUserDropdown(userContainer);
             }
         }
     }

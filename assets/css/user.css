@@ -1311,7 +1311,8 @@ body {
     transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-.site-navbar-wrapper .site-nav-user-dropdown-container:hover .nav-user-arrow {
+.site-navbar-wrapper .site-nav-user-dropdown-container:hover .nav-user-arrow,
+.site-navbar-wrapper .site-nav-user-dropdown-container.is-open .nav-user-arrow {
     transform: rotate(180deg);
 }
 
@@ -1348,11 +1349,24 @@ body {
 }
 
 .site-navbar-wrapper .site-nav-user-dropdown-container:hover .site-nav-user-menu,
-.site-navbar-wrapper .site-nav-user-dropdown-container:focus-within .site-nav-user-menu {
+.site-navbar-wrapper .site-nav-user-dropdown-container:focus-within .site-nav-user-menu,
+.site-navbar-wrapper .site-nav-user-dropdown-container.is-open .site-nav-user-menu {
     opacity: 1;
     visibility: visible;
     transform: translateY(0) scale(1);
     pointer-events: auto;
+}
+
+/* 页面滚动时自动收回下拉菜单样式覆盖 */
+.site-navbar-wrapper .site-nav-user-dropdown-container.is-closed-on-scroll .site-nav-user-menu {
+    opacity: 0 !important;
+    visibility: hidden !important;
+    transform: translateY(8px) scale(0.96) !important;
+    pointer-events: none !important;
+}
+
+.site-navbar-wrapper .site-nav-user-dropdown-container.is-closed-on-scroll .nav-user-arrow {
+    transform: rotate(0deg) !important;
 }
 
 .dark-mode .site-navbar-wrapper .site-nav-user-menu {
