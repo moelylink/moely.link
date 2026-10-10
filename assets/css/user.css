@@ -707,13 +707,34 @@ body {
 }
 
 .page-title-artist .artist-avatar-platform-badge.pixiv {
-    background: #ffffff;
+    background: #0096fa;
     color: #0096fa;
+    position: relative;
+    overflow: hidden;
 }
 
 .dark-mode .page-title-artist .artist-avatar-platform-badge.pixiv {
-    background: #252830;
+    background: #0096fa;
     color: #0096fa;
+}
+
+.page-title-artist .artist-avatar-platform-badge.pixiv::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 48%;
+    height: 48%;
+    background: #ffffff;
+    border-radius: 50%;
+    z-index: 1;
+}
+
+.page-title-artist .artist-avatar-platform-badge.pixiv i {
+    position: relative;
+    z-index: 2;
+    font-size: 17px;
 }
 
 .page-title-artist .artist-avatar-platform-badge.twitter,
@@ -750,17 +771,37 @@ body {
 }
 
 .page-title-artist .artist-avatar-platform-badge.dual-platform .pixiv-icon {
-    background: #ffffff;
+    background: #0096fa;
     color: #0096fa;
-    font-size: 14px;
     border: 2px solid #ffffff;
     z-index: 2;
+    position: relative;
+    overflow: hidden;
 }
 
 .dark-mode .page-title-artist .artist-avatar-platform-badge.dual-platform .pixiv-icon {
-    background: #252830;
+    background: #0096fa;
     color: #0096fa;
     border-color: #252830;
+}
+
+.page-title-artist .artist-avatar-platform-badge.dual-platform .pixiv-icon::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 48%;
+    height: 48%;
+    background: #ffffff;
+    border-radius: 50%;
+    z-index: 1;
+}
+
+.page-title-artist .artist-avatar-platform-badge.dual-platform .pixiv-icon i {
+    position: relative;
+    z-index: 2;
+    font-size: 15px;
 }
 
 .page-title-artist .artist-avatar-platform-badge.dual-platform .twitter-icon {
@@ -768,7 +809,8 @@ body {
     color: #ffffff;
     font-size: 11px;
     border: 2px solid #ffffff;
-    margin-left: -12px; /* 负边距精准遮住前一个图标的 50% */
+    margin-left: -12px;
+    /* 负边距精准遮住前一个图标的 50% */
     z-index: 1;
 }
 
@@ -2032,4 +2074,3 @@ body.nav-drawer-open {
     background: rgba(255, 255, 255, 0.12);
     color: #ffffff;
 }
-

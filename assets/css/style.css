@@ -90,6 +90,8 @@
     height: 100%;
     display: block;
     fill: var(--brand-white);
+    shape-rendering: geometricPrecision;
+    text-rendering: geometricPrecision;
 }
 
 /* “哩”字容器 */
@@ -112,6 +114,8 @@
     height: 68px;
     display: block;
     overflow: visible;
+    shape-rendering: geometricPrecision;
+    text-rendering: geometricPrecision;
 }
 
 #tb-preloader .li-path {
