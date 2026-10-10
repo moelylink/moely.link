@@ -709,7 +709,6 @@ body {
 .page-title-artist .artist-avatar-platform-badge.pixiv {
     background: #0096fa;
     color: #0096fa;
-    position: relative;
     overflow: hidden;
 }
 
