@@ -2,7 +2,14 @@ let masonryInstance = null;
 let allData = [];
 let isLoading = false;
 let loadedGroups = 0;
-const MAX_GROUPS = 5;
+const MAX_GROUPS = 10;
+
+function showEndTip() {
+    const tip = document.getElementById('random-end-tip');
+    if (tip) {
+        tip.style.display = 'flex';
+    }
+}
 
 // 随机打乱
 function shuffleArray(arr) {
@@ -94,21 +101,23 @@ function loadNextBatch() {
     const container = document.querySelector('.portfolio');
 
     // 生成DOM元素数组
+    const escapeHtml = (str) => String(str).replace(/[&<>"']/g, s => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[s]));
     let elements = batch.map(item => {
         let displayUser = item.user || '';
         if (displayUser.startsWith('@')) {
             displayUser = displayUser.substring(1);
         }
+        const displayTitle = escapeHtml(item.title || item.id);
         const div = document.createElement('div');
         div.className = 'portfolio-item';
         div.innerHTML = `
             <div class="thumb">
                 <a href="/img/${item.id}/">
-                    <img class="img-item lazyload" data-src="${item.urls}" src="/assets/img/loading.gif" alt="${item.id}" onload="if(window.masonryInstance) window.masonryInstance.layout();" onerror="if(window.masonryInstance) window.masonryInstance.layout();">
+                    <img class="img-item lazyload" data-src="${item.urls}" src="/assets/img/loading.gif" alt="${displayTitle}" onload="if(window.masonryInstance) window.masonryInstance.layout();" onerror="if(window.masonryInstance) window.masonryInstance.layout();">
                     ${item.total ? `<span class="total-num">${item.total}</span>` : ''}
                 </a>
-                <div class="widget-tags" style="background-color: rgba(0,0,0,0.5); color: #eee;">
-                    ${item.id}
+                <div class="widget-tags">
+                    ${displayTitle}
                     <br/>By ${item.category} ${displayUser}
                 </div>
             </div>
@@ -143,6 +152,15 @@ function loadNextBatch() {
     elements.forEach(el => fragment.appendChild(el));
     container.appendChild(fragment);
 
+    // 复用全站 lazyload.js 为新追加的图片绑定懒加载
+    if (window.jQuery && typeof window.jQuery.fn.lazyload === 'function') {
+        window.jQuery(elements).find('img.lazyload').lazyload({
+            onLoaded: function () {
+                if (masonryInstance) masonryInstance.layout();
+            }
+        });
+    }
+
     // 立即通知 Masonry 新元素进来了，并触发一次排版
     if (masonryInstance) {
         masonryInstance.appended(elements);
@@ -155,6 +173,9 @@ function loadNextBatch() {
             masonryInstance.layout();
         }
         isLoading = false;
+        if (loadedGroups >= MAX_GROUPS || allData.length === 0) {
+            showEndTip();
+        }
     }).on('progress', function () {
         // 某张图加载后，再次重排修正高度
         if (masonryInstance) masonryInstance.layout();
@@ -162,7 +183,10 @@ function loadNextBatch() {
 }
 
 function handleScroll() {
-    if (loadedGroups >= MAX_GROUPS) return;
+    if (loadedGroups >= MAX_GROUPS) {
+        showEndTip();
+        return;
+    }
 
     // 视窗高度 + 滚动距离 >= 页面高度 - 触发距离 (e.g., 800px)
     const scrollHeight = document.documentElement.scrollHeight;
